@@ -1,0 +1,70 @@
+package com.example.ooo.backend.service;
+
+import com.example.ooo.backend.DTO.TodoDTO;
+import com.example.ooo.backend.DTO.UserDTO;
+import com.example.ooo.backend.model.Todo;
+import com.example.ooo.backend.model.User;
+import com.example.ooo.backend.repository.TodoRepo;
+import com.example.ooo.backend.repository.UserRepo;
+import com.example.ooo.frontend.forms.TodoForm;
+import com.example.ooo.frontend.forms.UserLoginForm;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.Calendar;
+
+@Service
+@AllArgsConstructor
+public class TodoService {
+
+    private final TodoRepo todoRepo;
+    private final UserRepo userRepo;
+
+    public void createTodo(TodoForm todoForm, String login){
+            Todo todo = Todo.builder()
+                    .date(Calendar.getInstance().getTime())
+                    .name(todoForm.getName())
+                    .description(todoForm.getDescription())
+                    .status("Новый")
+                    .user(userRepo.findByLogin(login).get())
+                    .build();
+
+        todoRepo.save(todo);
+    }
+
+    public void editTodo(TodoForm todoForm){
+        Todo todo = todoRepo.findById(todoForm.getId()).get();
+        todo.setName(todoForm.getName());
+        todo.setDescription(todoForm.getDescription());
+        todoRepo.save(todo);
+    }
+
+    public Page<TodoDTO> getAll(Pageable pageable, String login){
+        return todoRepo.findAllByUserLogin(pageable, login).map(TodoDTO::from);
+    }
+
+    public void status(Long id){
+        Todo todo = todoRepo.findById(id).get();
+        if (todo.getStatus().equals("Новый")){
+            todo.setStatus("На исполнении");
+            todoRepo.save(todo);
+        }
+        else if (todo.getStatus().equals("На исполнении")){
+            todo.setStatus("Готово");
+            todoRepo.save(todo);
+        }
+        else {
+            todo.setStatus("Новый");
+            todoRepo.save(todo);
+        }
+    }
+    public void delete(Long id){
+        todoRepo.deleteById(id);
+    }
+    public TodoDTO get(Long id){
+        return todoRepo.findById(id).map(TodoDTO::from).get();
+    }
+}
