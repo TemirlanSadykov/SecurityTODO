@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface UserRepo extends JpaRepository<User, Long> {
     Optional<User> findByLogin(String login);
 
-    Page<User> findUsersByRole(Pageable pageable, String role);
+    Page<User> findUsersByRoleName(Pageable pageable, String name);
     boolean existsByLoginAndRoleId(String login, Long id);
 }

@@ -1,5 +1,6 @@
 package com.example.ooo.backend.DTO;
 
+import com.example.ooo.backend.model.Status;
 import com.example.ooo.backend.model.Todo;
 import com.example.ooo.backend.model.User;
 import lombok.*;
@@ -16,7 +17,7 @@ public class TodoDTO {
     private Date date;
     private String name;
     private String description;
-    private String status;
+    private Enum<Status> status;
     private UserDTO userDTO;
 
     public static TodoDTO from(Todo todo) {

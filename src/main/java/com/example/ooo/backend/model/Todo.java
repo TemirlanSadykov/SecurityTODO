@@ -29,9 +29,8 @@ public class Todo {
     @Column(length = 256)
     private String description;
 
-    @NotBlank(message = "Обязательное поле")
     @Column(length = 16)
-    private String status;
+    private Enum<Status> status;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

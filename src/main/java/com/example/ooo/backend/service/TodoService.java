@@ -2,6 +2,7 @@ package com.example.ooo.backend.service;
 
 import com.example.ooo.backend.DTO.TodoDTO;
 import com.example.ooo.backend.DTO.UserDTO;
+import com.example.ooo.backend.model.Status;
 import com.example.ooo.backend.model.Todo;
 import com.example.ooo.backend.model.User;
 import com.example.ooo.backend.repository.TodoRepo;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -28,7 +30,7 @@ public class TodoService {
                 .date(Calendar.getInstance().getTime())
                 .name(todoForm.getName())
                 .description(todoForm.getDescription())
-                .status("Новый")
+                .status(Status.NEW)
                 .user(userRepo.findByLogin(login).get())
                 .build();
 
@@ -48,16 +50,21 @@ public class TodoService {
 
     public void status(Long id) {
         Todo todo = todoRepo.findById(id).get();
-        if (todo.getStatus().equals("Новый")) {
-            todo.setStatus("На исполнении");
-            todoRepo.save(todo);
-        } else if (todo.getStatus().equals("На исполнении")) {
-            todo.setStatus("Готово");
-            todoRepo.save(todo);
-        } else {
-            todo.setStatus("Новый");
+        Status[] statuses = Status.values();
+        if (todo.getStatus().equals(Status.values()[statuses.length-1])){
+            todo.setStatus(Status.values()[0]);
             todoRepo.save(todo);
         }
+        else {
+            for (int i = 0; i < statuses.length; i++){
+                if (todo.getStatus().equals(Status.values()[i])) {
+                    todo.setStatus(Status.values()[i+1]);
+                    todoRepo.save(todo);
+                    break;
+                }
+            }
+        }
+
     }
 
     public void delete(Long id) {

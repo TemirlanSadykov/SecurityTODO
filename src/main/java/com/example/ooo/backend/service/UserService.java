@@ -38,7 +38,7 @@ public class UserService {
     }
 
     public Page<UserDTO> findUsersByRole(Pageable pageable) {
-        return userRepo.findUsersByRole(pageable, Constants.USER).map(UserDTO::from);
+        return userRepo.findUsersByRoleName(pageable, Constants.ROLE_USER).map(UserDTO::from);
     }
 
     public void activate(Long id) {

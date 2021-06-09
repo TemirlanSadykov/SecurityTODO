@@ -13,7 +13,7 @@ CREATE TABLE todos (
                        date DATETIME NOT NULL,
                        name VARCHAR(64) NOT NULL,
                        description VARCHAR(256) NOT NULL,
-                       status VARCHAR(16) NOT NULL,
+                       status ENUM NOT NULL,
                        user_id BIGINT NOT NULL,
                        PRIMARY KEY (id)
 );
