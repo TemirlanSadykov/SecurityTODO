@@ -30,16 +30,16 @@ public class User {
     @Column(length = 64)
     private String password;
 
-    @NotBlank(message = "Обязательное поле")
+    @NotNull(message = "Обязательное поле")
     @Column
-    private String activate;
+    private boolean activate;
 
     @Column
     @Builder.Default
     private boolean enabled = true;
 
-    @NotBlank(message = "Обязательное поле")
-    @Column
-    private String role;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
 }

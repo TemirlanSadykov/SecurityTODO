@@ -13,7 +13,7 @@ public class UserDTO {
     private String login;
     private String email;
     private String password;
-    private String activate;
+    private boolean activate;
 
     public static UserDTO from(User user) {
         return builder()
@@ -21,7 +21,7 @@ public class UserDTO {
                 .email(user.getEmail())
                 .login(user.getLogin())
                 .password(user.getPassword())
-                .activate(user.getActivate())
+                .activate(user.isActivate())
                 .build();
     }
 }

@@ -18,7 +18,7 @@
                         <th scope="row">${user?counter}</th>
                         <td>${user.login}</td>
                         <td>${user.email}</td>
-                        <td><a href="/admin/users/activate/${user.id}">${user.activate}</a></td>
+                        <td><a href="/admin/users/activate/${user.id}">${user.activate?string("Да", "Нет")}</a></td>
                     </tr>
         </#list>
 

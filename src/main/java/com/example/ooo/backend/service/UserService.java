@@ -2,7 +2,9 @@ package com.example.ooo.backend.service;
 
 import com.example.ooo.backend.DTO.UserDTO;
 import com.example.ooo.backend.model.User;
+import com.example.ooo.backend.repository.RoleRepo;
 import com.example.ooo.backend.repository.UserRepo;
+import com.example.ooo.backend.util.Constants;
 import com.example.ooo.frontend.forms.UserLoginForm;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepo userRepo;
     private final PasswordEncoder encoder;
+    private final RoleRepo roleRepo;
 
     public String createUser(UserLoginForm userLoginForm) {
         if (userRepo.findByLogin(userLoginForm.getLogin()).isPresent()) {
@@ -25,8 +28,8 @@ public class UserService {
                     .login(userLoginForm.getLogin())
                     .email(userLoginForm.getEmail())
                     .password(encoder.encode(userLoginForm.getPassword()))
-                    .role(userLoginForm.getRole())
-                    .activate("Да")
+                    .role(roleRepo.findById(userLoginForm.getRole()).get())
+                    .activate(true)
                     .build();
 
             userRepo.save(user);
@@ -35,17 +38,17 @@ public class UserService {
     }
 
     public Page<UserDTO> findUsersByRole(Pageable pageable) {
-        return userRepo.findUsersByRole(pageable, "ROLE_USER").map(UserDTO::from);
+        return userRepo.findUsersByRole(pageable, Constants.USER).map(UserDTO::from);
     }
 
     public void activate(Long id) {
-        if (userRepo.findById(id).get().getActivate().equals("Да")) {
+        if (userRepo.findById(id).get().isActivate()) {
             User user = userRepo.findById(id).get();
-            user.setActivate("Нет");
+            user.setActivate(false);
             userRepo.save(user);
         } else {
             User user = userRepo.findById(id).get();
-            user.setActivate("Да");
+            user.setActivate(true);
             userRepo.save(user);
         }
     }

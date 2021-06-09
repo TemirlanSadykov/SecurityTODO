@@ -1,5 +1,6 @@
 package com.example.ooo.backend.config;
 
+import com.example.ooo.backend.util.Constants;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,9 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/default")
                 .authenticated()
                 .antMatchers("/admin/**")
-                .hasRole("ADMIN")
+                .hasRole(Constants.ADMIN)
                 .antMatchers("/user/**")
-                .hasRole("USER");
+                .hasRole(Constants.USER);
 
         http.authorizeRequests()
                 .antMatchers("/")
@@ -58,9 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 + " from users"
                 + " where login = ?";
 
-        String fetchRolesQuery = "select login, role" +
-                " from users" +
-                " where login = ?";
+        String fetchRolesQuery = "select u.login, r.name" +
+                " from users u, roles r" +
+                " where r.id = u.role_id and u.login = ?";
 
         auth.jdbcAuthentication()
                 .usersByUsernameQuery(fetchAdminsQuery)

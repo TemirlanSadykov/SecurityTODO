@@ -33,10 +33,11 @@
             </div>
             <div class="form-group">
                 <label>Выберите должность:</label>
-                <input type="radio" id="role-admin" name="role" value="ROLE_ADMIN">
-                <label for="role-admin">Админ</label>
-                <input type="radio" id="role-user" name="role" value="ROLE_USER">
-                <label for="role-user">Пользователь</label>
+
+                <#list role as rl>
+                    <input type="radio" id="${rl.name}" name="role" value="${rl.id}">
+                    <label for="${rl.name}">${rl.name}</label>
+                </#list>
                 <#if errors??>
                     <#list errors as fieldError>
                         <#if fieldError.field == 'role'>

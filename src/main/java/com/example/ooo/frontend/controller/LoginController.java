@@ -1,7 +1,9 @@
 package com.example.ooo.frontend.controller;
 
 import com.example.ooo.backend.repository.UserRepo;
+import com.example.ooo.backend.service.RoleService;
 import com.example.ooo.backend.service.UserService;
+import com.example.ooo.backend.util.Constants;
 import com.example.ooo.frontend.forms.UserLoginForm;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -22,7 +24,7 @@ import java.security.Principal;
 public class LoginController {
 
     private final UserService userService;
-
+    private final RoleService roleService;
     private final UserRepo userRepo;
 
     @GetMapping("/default")
@@ -30,12 +32,12 @@ public class LoginController {
         model.addAttribute("error", error);
 
         String login = principal.getName();
-        if (userRepo.findByLogin(login).get().getRole().equals("ROLE_ADMIN")) {
-            return "redirect:/admin";
-        } else {
-            return "redirect:/user";
+        for (int i = 0; i < roleService.getAll().size(); i++){
+            if (userRepo.existsByLoginAndRoleId(login, roleService.getAll().get(i).getId())) {
+                return Constants.REDIRECT_LIST().get(i);
+            }
         }
-
+        return "/";
     }
 
     @GetMapping("/")
@@ -46,6 +48,7 @@ public class LoginController {
 
     @GetMapping("/register")
     public String register(Model model) {
+        model.addAttribute("role", roleService.getAll());
         return "user/register";
     }
 

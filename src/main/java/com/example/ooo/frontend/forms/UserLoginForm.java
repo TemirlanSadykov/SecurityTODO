@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -23,8 +24,8 @@ public class UserLoginForm {
     @Email(message = "Такого email нет")
     private String email;
 
-    @NotBlank(message = "Вы не выбрали должность")
-    private String role;
+    @NotNull(message = "Вы не выбрали должность")
+    private Long role;
 
     @NotBlank(message = "Обязательное поле")
     @Size(min = 8, message = "Пароль должен содержать минимум 8 символов")
