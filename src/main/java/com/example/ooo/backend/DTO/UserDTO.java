@@ -15,7 +15,7 @@ public class UserDTO {
     private String password;
     private String activate;
 
-    public static UserDTO from(User user){
+    public static UserDTO from(User user) {
         return builder()
                 .id(user.getId())
                 .email(user.getEmail())

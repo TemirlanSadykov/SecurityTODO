@@ -30,10 +30,9 @@ public class LoginController {
         model.addAttribute("error", error);
 
         String login = principal.getName();
-        if(userRepo.findByLogin(login).get().getRole().equals("ROLE_ADMIN")){
+        if (userRepo.findByLogin(login).get().getRole().equals("ROLE_ADMIN")) {
             return "redirect:/admin";
-        }
-        else {
+        } else {
             return "redirect:/user";
         }
 
@@ -52,7 +51,7 @@ public class LoginController {
 
     @PostMapping("/register")
     public String login(@Valid UserLoginForm userLoginForm,
-                        BindingResult validationResult, RedirectAttributes attributes){
+                        BindingResult validationResult, RedirectAttributes attributes) {
 
         if (validationResult.hasFieldErrors()) {
             attributes.addFlashAttribute("errors", validationResult.getFieldErrors());
@@ -60,10 +59,9 @@ public class LoginController {
         }
 
         String user = userService.createUser(userLoginForm);
-        if (user == null){
+        if (user == null) {
             return "redirect:/";
-        }
-        else {
+        } else {
             attributes.addFlashAttribute("error", user);
             return "redirect:/register";
         }

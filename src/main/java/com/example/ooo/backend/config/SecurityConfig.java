@@ -1,4 +1,4 @@
-package com.example.ooo.backend.util;
+package com.example.ooo.backend.config;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

@@ -19,7 +19,7 @@ public class TodoDTO {
     private String status;
     private UserDTO userDTO;
 
-    public static TodoDTO from(Todo todo){
+    public static TodoDTO from(Todo todo) {
         return builder()
                 .id(todo.getId())
                 .date(todo.getDate())

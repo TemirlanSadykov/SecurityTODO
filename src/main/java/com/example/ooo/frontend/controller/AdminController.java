@@ -35,7 +35,7 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public String adminPageUsers(Model model, Pageable pageable, HttpServletRequest uriBuilder, Principal principal){
+    public String adminPageUsers(Model model, Pageable pageable, HttpServletRequest uriBuilder, Principal principal) {
         model.addAttribute("userName", principal.getName());
 
         var users = userService.findUsersByRole(pageable);
@@ -46,20 +46,22 @@ public class AdminController {
     }
 
     @GetMapping("/users/activate/{id}")
-    public String adminPageUsersActivate(@PathVariable Long id){
+    public String adminPageUsersActivate(@PathVariable Long id) {
         userService.activate(id);
 
         return "redirect:/admin/users";
     }
+
     @GetMapping("/todo")
-    public String createTodo(Model model, Principal principal){
+    public String createTodo(Model model, Principal principal) {
         model.addAttribute("userName", principal.getName());
 
         return "admin/createAdminTodo";
     }
+
     @PostMapping("/todo")
     public String todo(@Valid TodoForm todoForm, Principal principal,
-                        BindingResult validationResult, RedirectAttributes attributes){
+                       BindingResult validationResult, RedirectAttributes attributes) {
 
         if (validationResult.hasFieldErrors()) {
             attributes.addFlashAttribute("errors", validationResult.getFieldErrors());
@@ -70,8 +72,9 @@ public class AdminController {
         return "redirect:/admin";
 
     }
+
     @GetMapping("/todos")
-    public String getTodos(Model model, Pageable pageable, HttpServletRequest uriBuilder, Principal principal){
+    public String getTodos(Model model, Pageable pageable, HttpServletRequest uriBuilder, Principal principal) {
         model.addAttribute("userName", principal.getName());
 
         var todos = todoService.getAll(pageable, principal.getName());
@@ -80,40 +83,45 @@ public class AdminController {
 
         return "admin/getTodos";
     }
+
     @GetMapping("/todo/status/{id}")
-    public String changeTodoStatus(@PathVariable Long id){
+    public String changeTodoStatus(@PathVariable Long id) {
         todoService.status(id);
 
         return "redirect:/admin/todos";
     }
+
     @GetMapping("/todo/delete/{id}")
-    public String deleteTodo(@PathVariable Long id){
+    public String deleteTodo(@PathVariable Long id) {
         todoService.delete(id);
 
         return "redirect:/admin/todos";
     }
+
     @GetMapping("/todo/edit/{id}")
-    public String editTodo(Model model, Principal principal, @PathVariable Long id){
+    public String editTodo(Model model, Principal principal, @PathVariable Long id) {
         model.addAttribute("userName", principal.getName());
         model.addAttribute("todo", todoService.get(id));
 
         return "admin/editTodo";
     }
+
     @PostMapping("/todo/edit")
     public String editTodo(@Valid TodoForm todoForm,
-                           BindingResult validationResult, RedirectAttributes attributes){
+                           BindingResult validationResult, RedirectAttributes attributes) {
 
         if (validationResult.hasFieldErrors()) {
             attributes.addFlashAttribute("errors", validationResult.getFieldErrors());
-            return "redirect:/admin/todo/edit/"+todoForm.getId();
+            return "redirect:/admin/todo/edit/" + todoForm.getId();
         }
 
         todoService.editTodo(todoForm);
         return "redirect:/admin/todos";
 
     }
+
     @GetMapping("/todo/open/{id}")
-    public String openTodo(Model model, Principal principal, @PathVariable Long id){
+    public String openTodo(Model model, Principal principal, @PathVariable Long id) {
         model.addAttribute("userName", principal.getName());
         model.addAttribute("todo", todoService.get(id));
 

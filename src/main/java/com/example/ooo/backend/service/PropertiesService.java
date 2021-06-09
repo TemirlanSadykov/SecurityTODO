@@ -15,7 +15,7 @@ public class PropertiesService {
         return pageableDefaultProps.getPageable().getDefaultPageSize();
     }
 
-    public void setDefaultPageSize(int pageSize){
+    public void setDefaultPageSize(int pageSize) {
         pageableDefaultProps.getPageable().setDefaultPageSize(pageSize);
     }
 

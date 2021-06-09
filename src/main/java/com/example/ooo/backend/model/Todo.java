@@ -33,7 +33,8 @@ public class Todo {
     @Column(length = 16)
     private String status;
 
-    @ManyToOne @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
 }

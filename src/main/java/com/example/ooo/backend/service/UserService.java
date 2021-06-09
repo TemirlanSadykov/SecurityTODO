@@ -17,11 +17,10 @@ public class UserService {
     private final UserRepo userRepo;
     private final PasswordEncoder encoder;
 
-    public String createUser(UserLoginForm userLoginForm){
-        if(userRepo.findByLogin(userLoginForm.getLogin()).isPresent()){
+    public String createUser(UserLoginForm userLoginForm) {
+        if (userRepo.findByLogin(userLoginForm.getLogin()).isPresent()) {
             return "Данный пользователь зарегистрирован";
-        }
-        else {
+        } else {
             User user = User.builder()
                     .login(userLoginForm.getLogin())
                     .email(userLoginForm.getEmail())
@@ -35,17 +34,16 @@ public class UserService {
         }
     }
 
-    public Page<UserDTO> findUsersByRole(Pageable pageable){
+    public Page<UserDTO> findUsersByRole(Pageable pageable) {
         return userRepo.findUsersByRole(pageable, "ROLE_USER").map(UserDTO::from);
     }
 
-    public void activate(Long id){
-        if (userRepo.findById(id).get().getActivate().equals("Да")){
+    public void activate(Long id) {
+        if (userRepo.findById(id).get().getActivate().equals("Да")) {
             User user = userRepo.findById(id).get();
             user.setActivate("Нет");
             userRepo.save(user);
-        }
-        else {
+        } else {
             User user = userRepo.findById(id).get();
             user.setActivate("Да");
             userRepo.save(user);
