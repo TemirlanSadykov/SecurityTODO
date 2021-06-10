@@ -50,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anonymous()
                 .anyRequest()
                 .permitAll();
+        http.csrf().disable();
     }
 
     @Override

@@ -12,5 +12,4 @@ import java.util.Optional;
 @Transactional
 public interface TodoRepo extends JpaRepository<Todo, Long> {
     Page<Todo> findAllByUserLogin(Pageable pageable, String login);
-
 }

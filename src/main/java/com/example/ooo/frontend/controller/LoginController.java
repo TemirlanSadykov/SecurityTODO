@@ -32,7 +32,7 @@ public class LoginController {
         model.addAttribute("error", error);
 
         String login = principal.getName();
-        for (int i = 0; i < roleService.getAll().size(); i++){
+        for (int i = 0; i < roleService.getAll().size(); i++) {
             if (userRepo.existsByLoginAndRoleId(login, roleService.getAll().get(i).getId())) {
                 return Constants.REDIRECT_LIST().get(i);
             }

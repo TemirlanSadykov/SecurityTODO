@@ -19,5 +19,4 @@ public interface RoleRepo extends JpaRepository<Role, Long> {
     void insertRoleWithId(@Param("id") Long id, @Param("name") String name);
 
     Optional<Role> findByName(String name);
-
 }
