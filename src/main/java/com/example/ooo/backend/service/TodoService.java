@@ -51,14 +51,13 @@ public class TodoService {
     public void status(Long id) {
         Todo todo = todoRepo.findById(id).get();
         Status[] statuses = Status.values();
-        if (todo.getStatus().equals(Status.values()[statuses.length-1])){
+        if (todo.getStatus().equals(Status.values()[statuses.length - 1])) {
             todo.setStatus(Status.values()[0]);
             todoRepo.save(todo);
-        }
-        else {
-            for (int i = 0; i < statuses.length; i++){
+        } else {
+            for (int i = 0; i < statuses.length; i++) {
                 if (todo.getStatus().equals(Status.values()[i])) {
-                    todo.setStatus(Status.values()[i+1]);
+                    todo.setStatus(Status.values()[i + 1]);
                     todoRepo.save(todo);
                     break;
                 }

@@ -29,8 +29,9 @@ public class Todo {
     @Column(length = 256)
     private String description;
 
-    @Column(length = 16)
-    private Enum<Status> status;
+    @Column(length = 32)
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

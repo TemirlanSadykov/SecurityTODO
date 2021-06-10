@@ -17,7 +17,7 @@ public class TodoDTO {
     private Date date;
     private String name;
     private String description;
-    private Enum<Status> status;
+    private Status status;
     private UserDTO userDTO;
 
     public static TodoDTO from(Todo todo) {
