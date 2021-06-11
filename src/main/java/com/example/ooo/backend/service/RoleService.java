@@ -21,8 +21,6 @@ import java.util.List;
 @AllArgsConstructor
 public class RoleService {
 
-    private final TodoRepo todoRepo;
-    private final UserRepo userRepo;
     private final RoleRepo roleRepo;
 
     public List<RoleDTO> getAll() {
