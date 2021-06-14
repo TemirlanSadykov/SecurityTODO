@@ -26,7 +26,7 @@ public class UserService {
             User user = User.builder()
                     .login(userLoginForm.getLogin())
                     .email(userLoginForm.getEmail())
-                    .password(userLoginForm.getPassword())
+                    .password(encoder.encode(userLoginForm.getPassword()))
                     .role(roleRepo.findById(userLoginForm.getRole()).get())
                     .activate(true)
                     .build();
