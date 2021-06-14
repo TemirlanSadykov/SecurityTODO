@@ -1,6 +1,9 @@
 package com.example.ooo.frontend.controller;
 
+import com.example.ooo.backend.model.Status;
+import com.example.ooo.backend.repository.RoleRepo;
 import com.example.ooo.backend.service.PropertiesService;
+import com.example.ooo.backend.service.RoleService;
 import com.example.ooo.backend.service.TodoService;
 import com.example.ooo.backend.service.UserService;
 import com.example.ooo.frontend.forms.TodoForm;
@@ -19,6 +22,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -28,6 +34,7 @@ public class AdminController {
     private final UserService userService;
     private final PropertiesService propertiesService;
     private final TodoService todoService;
+    private final RoleService roleService;
 
     @GetMapping
     public String adminPage(Model model, Principal principal) {
@@ -85,13 +92,6 @@ public class AdminController {
         return "admin/getTodos";
     }
 
-    @GetMapping("/todo/status/{id}")
-    public String changeTodoStatus(@PathVariable Long id) {
-        todoService.status(id);
-
-        return "redirect:/admin/todos";
-    }
-
     @GetMapping("/todo/delete/{id}")
     public String deleteTodo(@PathVariable Long id) {
         todoService.delete(id);
@@ -103,6 +103,7 @@ public class AdminController {
     public String editTodo(Model model, Principal principal, @PathVariable Long id) {
         model.addAttribute("userName", principal.getName());
         model.addAttribute("todo", todoService.get(id));
+        model.addAttribute("status", userService.getStatus());
 
         return "admin/editTodo";
     }

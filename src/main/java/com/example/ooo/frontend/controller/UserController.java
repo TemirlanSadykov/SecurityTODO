@@ -1,7 +1,9 @@
 package com.example.ooo.frontend.controller;
 
+import com.example.ooo.backend.model.Status;
 import com.example.ooo.backend.service.PropertiesService;
 import com.example.ooo.backend.service.TodoService;
+import com.example.ooo.backend.service.UserService;
 import com.example.ooo.frontend.forms.TodoForm;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -17,12 +19,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Controller
 @RequestMapping("/user")
 @AllArgsConstructor
 public class UserController {
 
+    private final UserService userService;
     private final TodoService todoService;
     private final PropertiesService propertiesService;
 
@@ -63,13 +69,6 @@ public class UserController {
         return "user/getTodos";
     }
 
-    @GetMapping("/todo/status/{id}")
-    public String changeTodoStatus(@PathVariable Long id) {
-        todoService.status(id);
-
-        return "redirect:/user/todos";
-    }
-
     @GetMapping("/todo/delete/{id}")
     public String deleteTodo(@PathVariable Long id) {
         todoService.delete(id);
@@ -81,6 +80,7 @@ public class UserController {
     public String editTodo(Model model, Principal principal, @PathVariable Long id) {
         model.addAttribute("userName", principal.getName());
         model.addAttribute("todo", todoService.get(id));
+        model.addAttribute("status", userService.getStatus());
 
         return "user/editTodo";
     }

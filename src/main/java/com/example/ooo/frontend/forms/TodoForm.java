@@ -22,4 +22,6 @@ public class TodoForm {
     private String description;
 
     private Long id;
+
+    private String status;
 }

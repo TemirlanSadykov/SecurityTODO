@@ -39,6 +39,7 @@ public class TodoService {
         Todo todo = todoRepo.findById(todoForm.getId()).get();
         todo.setName(todoForm.getName());
         todo.setDescription(todoForm.getDescription());
+        todo.setStatus(Status.valueOf(todoForm.getStatus()));
         todoRepo.save(todo);
     }
 
@@ -46,7 +47,7 @@ public class TodoService {
         return todoRepo.findAllByUserLogin(pageable, login).map(TodoDTO::from);
     }
 
-    public void status(Long id) {
+    /*public void status(Long id) {
         Todo todo = todoRepo.findById(id).get();
         Status[] statuses = Status.values();
         if (todo.getStatus().equals(Status.values()[statuses.length - 1])) {
@@ -61,7 +62,7 @@ public class TodoService {
                 }
             }
         }
-    }
+    }*/
 
     public void delete(Long id) {
         todoRepo.deleteById(id);

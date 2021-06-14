@@ -33,6 +33,14 @@
                     </#list>
                 </#if>
             </div>
+            <div class="form-group">
+                <label>Изменить статус:</label>
+                <select id="status" name="status">
+                    <#list status as st>
+                        <option value="${st.name()}">${st.name()}</option>
+                    </#list>
+                </select>
+            </div>
             <button name="register" class="btn btn-primary btn-block">Сохранить</button>
         </form>
     </div>

@@ -1,6 +1,7 @@
 package com.example.ooo.backend.service;
 
 import com.example.ooo.backend.dto.UserDTO;
+import com.example.ooo.backend.model.Status;
 import com.example.ooo.backend.model.User;
 import com.example.ooo.backend.repository.RoleRepo;
 import com.example.ooo.backend.repository.UserRepo;
@@ -11,6 +12,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -50,5 +55,10 @@ public class UserService {
             user.setActivate(true);
             userRepo.save(user);
         }
+    }
+    public List<Status> getStatus(){
+        List<Status> status = new ArrayList<>();
+        Collections.addAll(status, Status.values());
+        return status;
     }
 }
