@@ -6,6 +6,7 @@ import com.example.ooo.backend.service.PropertiesService;
 import com.example.ooo.backend.service.RoleService;
 import com.example.ooo.backend.service.TodoService;
 import com.example.ooo.backend.service.UserService;
+import com.example.ooo.backend.util.Constants;
 import com.example.ooo.frontend.forms.TodoForm;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -46,7 +47,7 @@ public class AdminController {
     public String adminPageUsers(Model model, Pageable pageable, HttpServletRequest uriBuilder, Principal principal) {
         model.addAttribute("userName", principal.getName());
 
-        var users = userService.findUsersByRole(pageable);
+        var users = userService.findUsersByRole(pageable, Constants.USER);
         String uri = uriBuilder.getRequestURI();
         PropertiesService.constructPageable(users, propertiesService.getDefaultPageSize(), model, uri);
 

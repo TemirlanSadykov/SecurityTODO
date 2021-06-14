@@ -36,8 +36,8 @@ public class UserService {
             userRepo.save(user);
     }
 
-    public Page<UserDTO> findUsersByRole(Pageable pageable) {
-        return userRepo.findUsersByRoleName(pageable, Constants.ROLE_USER).map(UserDTO::from);
+    public Page<UserDTO> findUsersByRole(Pageable pageable, String role) {
+        return userRepo.findUsersByRoleName(pageable, role).map(UserDTO::from);
     }
 
     public void activate(Long id) {
