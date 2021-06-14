@@ -60,12 +60,11 @@ public class LoginController {
             attributes.addFlashAttribute("errors", validationResult.getFieldErrors());
             return "redirect:/register";
         }
-
-        String user = userService.createUser(userLoginForm);
-        if (user == null) {
+        userService.createUser(userLoginForm);
+        if (userRepo.findByLogin(userLoginForm.getLogin()).isEmpty()) {
             return "redirect:/";
         } else {
-            attributes.addFlashAttribute("error", user);
+            attributes.addFlashAttribute("error", "Данный пользователь уже зарегистрирован.");
             return "redirect:/register";
         }
 

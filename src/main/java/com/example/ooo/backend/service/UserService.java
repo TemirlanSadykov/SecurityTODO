@@ -24,10 +24,7 @@ public class UserService {
     private final PasswordEncoder encoder;
     private final RoleRepo roleRepo;
 
-    public String createUser(UserLoginForm userLoginForm) {
-        if (userRepo.findByLogin(userLoginForm.getLogin()).isPresent()) {
-            return "Данный пользователь зарегистрирован";
-        } else {
+    public void createUser(UserLoginForm userLoginForm) {
             User user = User.builder()
                     .login(userLoginForm.getLogin())
                     .email(userLoginForm.getEmail())
@@ -37,8 +34,6 @@ public class UserService {
                     .build();
 
             userRepo.save(user);
-            return null;
-        }
     }
 
     public Page<UserDTO> findUsersByRole(Pageable pageable) {
