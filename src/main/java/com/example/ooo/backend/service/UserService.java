@@ -1,6 +1,6 @@
 package com.example.ooo.backend.service;
 
-import com.example.ooo.backend.DTO.UserDTO;
+import com.example.ooo.backend.dto.UserDTO;
 import com.example.ooo.backend.model.User;
 import com.example.ooo.backend.repository.RoleRepo;
 import com.example.ooo.backend.repository.UserRepo;
@@ -9,7 +9,6 @@ import com.example.ooo.frontend.forms.UserLoginForm;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +26,7 @@ public class UserService {
             User user = User.builder()
                     .login(userLoginForm.getLogin())
                     .email(userLoginForm.getEmail())
-                    .password(encoder.encode(userLoginForm.getPassword()))
+                    .password(userLoginForm.getPassword())
                     .role(roleRepo.findById(userLoginForm.getRole()).get())
                     .activate(true)
                     .build();

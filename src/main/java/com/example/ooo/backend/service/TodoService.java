@@ -1,22 +1,18 @@
 package com.example.ooo.backend.service;
 
-import com.example.ooo.backend.DTO.TodoDTO;
-import com.example.ooo.backend.DTO.UserDTO;
+import com.example.ooo.backend.dto.TodoDTO;
 import com.example.ooo.backend.model.Status;
 import com.example.ooo.backend.model.Todo;
 import com.example.ooo.backend.model.User;
 import com.example.ooo.backend.repository.TodoRepo;
 import com.example.ooo.backend.repository.UserRepo;
 import com.example.ooo.frontend.forms.TodoForm;
-import com.example.ooo.frontend.forms.UserLoginForm;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -26,12 +22,14 @@ public class TodoService {
     private final UserRepo userRepo;
 
     public void createTodo(TodoForm todoForm, String login) {
+        User user = userRepo.findByLogin(login).get();
+
         Todo todo = Todo.builder()
                 .date(Calendar.getInstance().getTime())
                 .name(todoForm.getName())
                 .description(todoForm.getDescription())
                 .status(Status.NEW)
-                .user(userRepo.findByLogin(login).get())
+                .user(user)
                 .build();
 
         todoRepo.save(todo);
@@ -63,7 +61,6 @@ public class TodoService {
                 }
             }
         }
-
     }
 
     public void delete(Long id) {

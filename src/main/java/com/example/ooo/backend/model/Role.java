@@ -15,6 +15,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Table(name = "roles")
 public class Role {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,5 +23,4 @@ public class Role {
     @NotBlank(message = "Обязательное поле")
     @Column(length = 64)
     private String name;
-
 }

@@ -1,8 +1,7 @@
-package com.example.ooo.backend.DTO;
+package com.example.ooo.backend.dto;
 
 import com.example.ooo.backend.model.Status;
 import com.example.ooo.backend.model.Todo;
-import com.example.ooo.backend.model.User;
 import lombok.*;
 
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.example.ooo.backend.DTO;
+package com.example.ooo.backend.dto;
 
 import com.example.ooo.backend.model.User;
 import lombok.*;

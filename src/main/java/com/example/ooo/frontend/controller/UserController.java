@@ -50,7 +50,6 @@ public class UserController {
 
         todoService.createTodo(todoForm, principal.getName());
         return "redirect:/user";
-
     }
 
     @GetMapping("/todos")
@@ -89,7 +88,6 @@ public class UserController {
     @PostMapping("/todo/edit")
     public String editTodo(@Valid TodoForm todoForm,
                            BindingResult validationResult, RedirectAttributes attributes) {
-
         if (validationResult.hasFieldErrors()) {
             attributes.addFlashAttribute("errors", validationResult.getFieldErrors());
             return "redirect:/user/todo/edit/" + todoForm.getId();
@@ -97,7 +95,6 @@ public class UserController {
 
         todoService.editTodo(todoForm);
         return "redirect:/user/todos";
-
     }
 
     @GetMapping("/todo/open/{id}")
