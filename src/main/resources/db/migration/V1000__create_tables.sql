@@ -1,5 +1,5 @@
 CREATE TABLE users (
-                       id BIGINT NOT NULL AUTO_INCREMENT,
+                       id serial  NOT NULL,
                        login VARCHAR(64) NOT NULL,
                        email VARCHAR(64) NOT NULL,
                        password VARCHAR(64) NOT NULL,
@@ -8,17 +8,18 @@ CREATE TABLE users (
                        role_id BIGINT NOT NULL,
                        PRIMARY KEY (id)
 );
+CREATE TYPE stat as ENUM('NEW', 'IN_PROCESS', 'DONE', 'WELL_DONE', 'SUPPER_DONE', 'AWFUL', 'SUCCESSFUL', 'BEAUTIFUL');
 CREATE TABLE todos (
-                       id BIGINT NOT NULL AUTO_INCREMENT,
-                       date DATETIME NOT NULL,
+                       id serial NOT NULL,
+                       date TIMESTAMP NOT NULL,
                        name VARCHAR(64) NOT NULL,
                        description VARCHAR(256) NOT NULL,
-                       status ENUM('NEW', 'IN_PROCESS', 'DONE', 'WELL_DONE', 'SUPPER_DONE', 'AWFUL', 'SUCCESSFUL', 'BEAUTIFUL') NOT NULL,
+                       status stat,
                        user_id BIGINT NOT NULL,
                        PRIMARY KEY (id)
 );
 CREATE TABLE roles (
-                       id BIGINT NOT NULL AUTO_INCREMENT,
+                       id serial NOT NULL,
                        name VARCHAR(64) NOT NULL,
                        PRIMARY KEY (id)
 );
