@@ -6,7 +6,7 @@ import com.example.ooo.backend.model.Todo;
 import com.example.ooo.backend.model.User;
 import com.example.ooo.backend.repository.TodoRepo;
 import com.example.ooo.backend.repository.UserRepo;
-import com.example.ooo.frontend.forms.TodoForm;
+import com.example.ooo.backend.forms.TodoForm;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,10 +1,11 @@
-package com.example.ooo.frontend.controller;
+package com.example.ooo.backend.controller;
 
-import com.example.ooo.backend.model.Status;
 import com.example.ooo.backend.service.PropertiesService;
+import com.example.ooo.backend.service.RoleService;
 import com.example.ooo.backend.service.TodoService;
 import com.example.ooo.backend.service.UserService;
-import com.example.ooo.frontend.forms.TodoForm;
+import com.example.ooo.backend.util.Constants;
+import com.example.ooo.backend.forms.TodoForm;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -19,30 +20,46 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/admin")
 @AllArgsConstructor
-public class UserController {
+public class AdminController {
 
     private final UserService userService;
-    private final TodoService todoService;
     private final PropertiesService propertiesService;
+    private final TodoService todoService;
+    private final RoleService roleService;
 
     @GetMapping
-    public String userPage(Model model, Principal principal) {
+    public String adminPage(Model model, Principal principal) {
         model.addAttribute("userName", principal.getName());
-        return "user/user";
+        return "admin/admin";
+    }
+
+    @GetMapping("/users")
+    public String adminPageUsers(Model model, Pageable pageable, HttpServletRequest uriBuilder, Principal principal) {
+        model.addAttribute("userName", principal.getName());
+
+        var users = userService.findUsersByRole(pageable, Constants.USER);
+        String uri = uriBuilder.getRequestURI();
+        PropertiesService.constructPageable(users, propertiesService.getDefaultPageSize(), model, uri);
+
+        return "admin/adminTool";
+    }
+
+    @GetMapping("/users/activate/{id}")
+    public String adminPageUsersActivate(@PathVariable Long id) {
+        userService.activate(id);
+
+        return "redirect:/admin/users";
     }
 
     @GetMapping("/todo")
     public String createTodo(Model model, Principal principal) {
         model.addAttribute("userName", principal.getName());
 
-        return "user/createUserTodo";
+        return "admin/createAdminTodo";
     }
 
     @PostMapping("/todo")
@@ -51,11 +68,12 @@ public class UserController {
 
         if (validationResult.hasFieldErrors()) {
             attributes.addFlashAttribute("errors", validationResult.getFieldErrors());
-            return "redirect:/user/todo";
+            return "redirect:/admin/todo";
         }
 
         todoService.createTodo(todoForm, principal.getName());
-        return "redirect:/user";
+        return "redirect:/admin";
+
     }
 
     @GetMapping("/todos")
@@ -66,14 +84,14 @@ public class UserController {
         String uri = uriBuilder.getRequestURI();
         PropertiesService.constructPageable(todos, propertiesService.getDefaultPageSize(), model, uri);
 
-        return "user/getTodos";
+        return "admin/getTodos";
     }
 
     @GetMapping("/todo/delete/{id}")
     public String deleteTodo(@PathVariable Long id) {
         todoService.delete(id);
 
-        return "redirect:/user/todos";
+        return "redirect:/admin/todos";
     }
 
     @GetMapping("/todo/edit/{id}")
@@ -82,19 +100,21 @@ public class UserController {
         model.addAttribute("todo", todoService.get(id));
         model.addAttribute("status", userService.getStatus());
 
-        return "user/editTodo";
+        return "admin/editTodo";
     }
 
     @PostMapping("/todo/edit")
     public String editTodo(@Valid TodoForm todoForm,
                            BindingResult validationResult, RedirectAttributes attributes) {
+
         if (validationResult.hasFieldErrors()) {
             attributes.addFlashAttribute("errors", validationResult.getFieldErrors());
-            return "redirect:/user/todo/edit/" + todoForm.getId();
+            return "redirect:/admin/todo/edit/" + todoForm.getId();
         }
 
         todoService.editTodo(todoForm);
-        return "redirect:/user/todos";
+        return "redirect:/admin/todos";
+
     }
 
     @GetMapping("/todo/open/{id}")

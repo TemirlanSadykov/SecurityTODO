@@ -1,10 +1,10 @@
-package com.example.ooo.frontend.controller;
+package com.example.ooo.backend.controller;
 
 import com.example.ooo.backend.repository.UserRepo;
 import com.example.ooo.backend.service.RoleService;
 import com.example.ooo.backend.service.UserService;
 import com.example.ooo.backend.util.Constants;
-import com.example.ooo.frontend.forms.UserLoginForm;
+import com.example.ooo.backend.forms.UserLoginForm;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,13 +31,7 @@ public class LoginController {
     public String defaultPage(@RequestParam(required = false, defaultValue = "false") Boolean error, Model model, Principal principal) {
         model.addAttribute("error", error);
 
-        String login = principal.getName();
-        for (int i = 0; i < roleService.getAll().size(); i++) {
-            if (userRepo.existsByLoginAndRoleId(login, roleService.getAll().get(i).getId())) {
-                return Constants.REDIRECT_LIST().get(i);
-            }
-        }
-        return "/";
+        return userService.giveRoles(principal);
     }
 
     @GetMapping("/")
