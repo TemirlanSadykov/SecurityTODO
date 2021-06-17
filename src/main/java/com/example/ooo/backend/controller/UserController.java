@@ -1,5 +1,6 @@
 package com.example.ooo.backend.controller;
 
+import com.example.ooo.backend.model.Status;
 import com.example.ooo.backend.service.PropertiesService;
 import com.example.ooo.backend.service.TodoService;
 import com.example.ooo.backend.service.UserService;
@@ -57,6 +58,7 @@ public class UserController {
     @GetMapping("/todos")
     public String getTodos(Model model, Pageable pageable, HttpServletRequest uriBuilder, Principal principal) {
         model.addAttribute("userName", principal.getName());
+        model.addAttribute("status");
 
         var todos = todoService.getAll(pageable, principal.getName());
         String uri = uriBuilder.getRequestURI();
@@ -76,7 +78,7 @@ public class UserController {
     public String editTodo(Model model, Principal principal, @PathVariable Long id) {
         model.addAttribute("userName", principal.getName());
         model.addAttribute("todo", todoService.get(id));
-        model.addAttribute("status", userService.getStatus());
+        model.addAttribute("status", todoService.getStatus());
 
         return "user/editTodo";
     }

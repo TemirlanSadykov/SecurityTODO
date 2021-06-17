@@ -8,13 +8,13 @@ CREATE TABLE users (
                        role_id BIGINT NOT NULL,
                        PRIMARY KEY (id)
 );
-CREATE TYPE newTypeOfStatus as ENUM('NEW', 'IN_PROCESS', 'DONE', 'WELL_DONE', 'SUPPER_DONE', 'AWFUL', 'SUCCESSFUL', 'BEAUTIFUL');
+create type Status as enum ('NEW', 'IN_PROCESS', 'DONE');
 CREATE TABLE todos (
                        id serial NOT NULL,
                        date TIMESTAMP NOT NULL,
                        name VARCHAR(64) NOT NULL,
                        description VARCHAR(256) NOT NULL,
-                       status newTypeOfStatus,
+                       status VARCHAR(32),
                        user_id BIGINT NOT NULL,
                        PRIMARY KEY (id)
 );

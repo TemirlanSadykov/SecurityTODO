@@ -53,11 +53,7 @@ public class UserService {
             userRepo.save(user);
         }
     }
-    public List<Status> getStatus(){
-        List<Status> status = new ArrayList<>();
-        Collections.addAll(status, Status.values());
-        return status;
-    }
+
     public String giveRoles(Principal principal){
         String login = principal.getName();
         for (int i = 0; i < roleService.getAll().size(); i++) {

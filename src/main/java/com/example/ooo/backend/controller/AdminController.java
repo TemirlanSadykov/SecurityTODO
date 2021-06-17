@@ -98,7 +98,7 @@ public class AdminController {
     public String editTodo(Model model, Principal principal, @PathVariable Long id) {
         model.addAttribute("userName", principal.getName());
         model.addAttribute("todo", todoService.get(id));
-        model.addAttribute("status", userService.getStatus());
+        model.addAttribute("status", todoService.getStatus());
 
         return "admin/editTodo";
     }

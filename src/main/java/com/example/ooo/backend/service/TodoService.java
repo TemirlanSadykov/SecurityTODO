@@ -1,6 +1,7 @@
 package com.example.ooo.backend.service;
 
 import com.example.ooo.backend.dto.TodoDTO;
+import com.example.ooo.backend.forms.FindTodoForm;
 import com.example.ooo.backend.model.Status;
 import com.example.ooo.backend.model.Todo;
 import com.example.ooo.backend.model.User;
@@ -12,7 +13,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -21,7 +25,7 @@ public class TodoService {
     private final TodoRepo todoRepo;
     private final UserRepo userRepo;
 
-    public void createTodo(TodoForm todoForm, String login) {
+    public void createTodo(TodoForm todoForm, String login) throws NullPointerException{
         User user = userRepo.findByLogin(login).get();
 
         Todo todo = Todo.builder()
@@ -64,6 +68,12 @@ public class TodoService {
         }
     }*/
 
+    public List<Status> getStatus(){
+        List<Status> status = new ArrayList<>();
+        Collections.addAll(status, Status.values());
+        return status;
+    }
+
     public void delete(Long id) {
         todoRepo.deleteById(id);
     }
@@ -71,4 +81,10 @@ public class TodoService {
     public TodoDTO get(Long id) {
         return todoRepo.findById(id).map(TodoDTO::from).get();
     }
-}
+
+    public List<Todo> findTodo(Pageable pageable, FindTodoForm findTodoForm) {
+
+        return todoRepo.findAllByStatusAndNameAndDateBetween(
+                Status.valueOf(findTodoForm.getStatus()), findTodoForm.getName(),
+                findTodoForm.getStartDate(), findTodoForm.getFinishDate());
+    }}

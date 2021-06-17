@@ -5,7 +5,9 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.sql.Types;
 import java.util.Date;
 
 @Data
@@ -29,7 +31,7 @@ public class Todo {
     @Column(length = 256)
     private String description;
 
-    @Column(length = 32)
+    @Column
     @Enumerated(EnumType.STRING)
     private Status status;
 

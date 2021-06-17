@@ -5,5 +5,6 @@
         <h3 class="text-center">Добро пожаловать в систему <b>${userName}</b></h3>
         <p><a class="btn btn-primary btn-block w-100" href="/user/todo" role="button">Создать TODO</a></p>
         <p><a class="btn btn-primary btn-block w-100" href="/user/todos" role="button">Просмотреть свои TODO</a></p>
+        <p><a class="btn btn-primary btn-block w-100" href="/user/todo/search" role="button">Поиск TODO</a></p>
     </div>
 </@main.renderWith>
