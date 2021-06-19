@@ -5,8 +5,8 @@
         <h3 class="text-center">Добро пожаловать в систему <b>${userName}</b></h3>
         <p><a class="btn btn-primary btn-block w-100" href="/admin/users" role="button">Список пользователей</a></p>
         <p><a class="btn btn-primary btn-block w-100" href="/admin/todo" role="button">Создать TODO</a></p>
-        <p><a class="btn btn-primary btn-block w-100" href="/admin/todos" role="button">Просмотреть свои TODO</a></p>
-
+        <p><a class="btn btn-primary btn-block w-100" href="/admin/todo/todos" role="button">Просмотреть свои TODO</a></p>
+        <p><a class="btn btn-primary btn-block w-100" href="/admin/todo/search" role="button">Поиск TODO</a></p>
     </div>
 
 </@main.renderWith>

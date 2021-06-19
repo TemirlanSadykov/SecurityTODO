@@ -11,11 +11,13 @@ public class RoleDTO {
 
     private Long id;
     private String name;
+    private String link;
 
     public static RoleDTO from(Role role) {
         return builder()
                 .id(role.getId())
                 .name(role.getName())
+                .link(role.getLink())
                 .build();
     }
 }

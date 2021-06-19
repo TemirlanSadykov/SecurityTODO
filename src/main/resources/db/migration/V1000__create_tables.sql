@@ -20,5 +20,6 @@ CREATE TABLE todos (
 CREATE TABLE roles (
                        id serial NOT NULL,
                        name VARCHAR(64) NOT NULL,
+                       link VARCHAR(64) NOT NULL,
                        PRIMARY KEY (id)
 );

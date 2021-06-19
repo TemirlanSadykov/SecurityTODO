@@ -11,6 +11,9 @@ public final class Constants {
     public static final String ROLE_ADMIN = "ADMIN";
     public static final String ROLE_USER = "USER";
 
+    public static final String LINK_ADMIN = "admin";
+    public static final String LINK_USER = "user";
+
     public static final String REDIRECT_ADMIN = "redirect:/admin";
     public static final String REDIRECT_USER = "redirect:/user";
 

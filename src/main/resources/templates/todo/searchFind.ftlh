@@ -19,10 +19,10 @@
                     <tr>
                         <th scope="row">${todo?counter}</th>
                         <td>${todo.date.format('dd-MMM-yyyy')}</td>
-                        <td><a href="/user/todo/open/${todo.id}">${todo.name}</a></td>
+                        <td><a href="/${link}/todo/open/${todo.id}">${todo.name}</a></td>
                         <td>${todo.status}</td>
-                        <td><a href="/user/todo/delete/${todo.id}" style="color:red;">Удалить</a></td>
-                        <td><a href="/user/todo/edit/${todo.id}" style="color:green;">Редактировать</a></td>
+                        <td><a href="/${link}/todo/delete/${todo.id}" style="color:red;">Удалить</a></td>
+                        <td><a href="/${link}/todo/edit/${todo.id}" style="color:green;">Редактировать</a></td>
 
                     </tr>
         </#list>

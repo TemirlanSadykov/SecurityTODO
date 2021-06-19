@@ -10,8 +10,9 @@ public class FillDatabase {
 
     public static void saveRolesConstant(RoleRepo roleRepo) {
         String[] roles = {Constants.ROLE_ADMIN, Constants.ROLE_USER};
+        String[] links = {Constants.LINK_ADMIN, Constants.LINK_USER};
         for (int i = 0; i < roles.length; i++) {
-            roleRepo.insertRoleWithId(Long.parseLong(Integer.toString(i + 1)), roles[i]);
+            roleRepo.insertRoleWithId(Long.parseLong(Integer.toString(i + 1)), roles[i], links[i]);
         }
     }
 

@@ -15,6 +15,6 @@ import java.util.Optional;
 @Transactional
 public interface RoleRepo extends JpaRepository<Role, Long> {
     @Modifying
-    @Query(value = "insert into roles (id, name)  values (:id, :name);", nativeQuery = true)
-    void insertRoleWithId(@Param("id") Long id, @Param("name") String name);
+    @Query(value = "insert into roles (id, name, link)  values (:id, :name, :link);", nativeQuery = true)
+    void insertRoleWithId(@Param("id") Long id, @Param("name") String name, @Param("link") String link);
 }

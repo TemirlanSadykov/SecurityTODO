@@ -5,6 +5,7 @@ import com.example.ooo.backend.util.Constants;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -13,12 +14,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
+import java.util.NoSuchElementException;
 
 @Configuration
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    private final DataSource dataSource;
 
     @Bean
     public PasswordEncoder encoder() {
@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
+    public UserDetailsService userDetailsService() throws InternalAuthenticationServiceException, NoSuchElementException {
         return new UserDetailsServiceImp();
     };
 

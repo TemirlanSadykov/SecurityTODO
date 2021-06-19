@@ -1,4 +1,4 @@
-<#import "partials/main.ftlh" as main>
+<#import "../partials/main.ftlh" as main>
 <@main.renderWith>
 <#--<@main.renderWith scripts=["scripts/.js"]>-->
     <div class="mx-auto mt-3 w-50">
@@ -12,7 +12,7 @@
                 <label><h3>Описание:</h3></label>
                 <p>${todo.description}</p>
             </div>
-            <a href="/default" class="btn btn-primary btn-block">В меню</a>
+            <a href="/${link}/todo/todos" class="btn btn-primary btn-block">Выйти</a>
 
     </div>
 </@main.renderWith>

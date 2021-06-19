@@ -23,4 +23,8 @@ public class Role {
     @NotBlank(message = "Обязательное поле")
     @Column(length = 64)
     private String name;
+
+    @NotBlank(message = "Обязательное поле")
+    @Column(length = 64)
+    private String link;
 }

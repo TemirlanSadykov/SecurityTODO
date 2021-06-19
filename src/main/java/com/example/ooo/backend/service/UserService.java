@@ -63,4 +63,7 @@ public class UserService {
         }
         return "/";
     }
+    public String checkUserRole(Principal principal){
+        return userRepo.findByLogin(principal.getName()).get().getRole().getLink();
+    }
 }
