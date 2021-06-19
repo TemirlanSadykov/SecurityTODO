@@ -1,5 +1,6 @@
 package com.example.ooo.backend.controller;
 
+import com.example.ooo.backend.forms.UserLoginForm;
 import com.example.ooo.backend.model.Status;
 import com.example.ooo.backend.service.PropertiesService;
 import com.example.ooo.backend.service.TodoService;
@@ -43,10 +44,10 @@ public class UserController {
     }
 
     @PostMapping("/todo")
-    public String todo(@Valid TodoForm todoForm, Principal principal,
-                       BindingResult validationResult, RedirectAttributes attributes) {
+    public String todo(@Valid TodoForm todoForm,
+                       BindingResult validationResult, RedirectAttributes attributes, Principal principal) {
 
-        if (validationResult.hasFieldErrors()) {
+        if (validationResult.hasErrors()) {
             attributes.addFlashAttribute("errors", validationResult.getFieldErrors());
             return "redirect:/user/todo";
         }

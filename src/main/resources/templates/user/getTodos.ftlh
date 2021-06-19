@@ -18,7 +18,7 @@
 
                     <tr>
                         <th scope="row">${todo?counter}</th>
-                        <td>${todo.date?date}</td>
+                        <td>${todo.date.format('dd-MMM-yyyy')}</td>
                         <td><a href="/user/todo/open/${todo.id}">${todo.name}</a></td>
                         <td>${todo.status}</td>
                         <td><a href="/user/todo/delete/${todo.id}" style="color:red;">Удалить</a></td>

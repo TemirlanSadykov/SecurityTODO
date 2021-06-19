@@ -4,6 +4,7 @@ import com.example.ooo.backend.model.Status;
 import com.example.ooo.backend.model.Todo;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -13,7 +14,7 @@ import java.util.Date;
 public class TodoDTO {
 
     private Long id;
-    private Date date;
+    private LocalDateTime date;
     private String name;
     private String description;
     private Status status;

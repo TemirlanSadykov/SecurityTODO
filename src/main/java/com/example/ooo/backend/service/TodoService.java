@@ -13,10 +13,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.security.Principal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +32,7 @@ public class TodoService {
         User user = userRepo.findByLogin(login).get();
 
         Todo todo = Todo.builder()
-                .date(Calendar.getInstance().getTime())
+                .date(LocalDateTime.now())
                 .name(todoForm.getName())
                 .description(todoForm.getDescription())
                 .status(Status.NEW)
@@ -74,6 +77,10 @@ public class TodoService {
         return status;
     }
 
+    public List<Todo> listAll(String login){
+        return todoRepo.findAllByUserLogin(login);
+    }
+
     public void delete(Long id) {
         todoRepo.deleteById(id);
     }
@@ -82,9 +89,32 @@ public class TodoService {
         return todoRepo.findById(id).map(TodoDTO::from).get();
     }
 
-    public List<Todo> findTodo(Pageable pageable, FindTodoForm findTodoForm) {
+    public List<Todo> findTodo(FindTodoForm findTodoForm, Principal principal) {
+        if(findTodoForm.getStatus().equals("all") && findTodoForm.getName().equals("") && findTodoForm.getStartDate().equals("") && findTodoForm.getFinishDate().equals("")) return todoRepo.findAllByUserLogin(principal.getName());
+        if(findTodoForm.getStatus().equals("all") && findTodoForm.getName().equals("") && findTodoForm.getStartDate().equals("")) return todoRepo.findAllByDateBeforeAndUserLogin(LocalDateTime.parse(findTodoForm.getFinishDate()), principal.getName());
+        if(findTodoForm.getStatus().equals("all") && findTodoForm.getName().equals("") && findTodoForm.getFinishDate().equals("")) return todoRepo.findAllByDateAfterAndUserLogin(LocalDateTime.parse(findTodoForm.getStartDate()), principal.getName());
+        if(findTodoForm.getStatus().equals("all") && findTodoForm.getName().equals("")) return todoRepo.findAllByDateBetweenAndUserLogin(
+                LocalDateTime.parse(findTodoForm.getStartDate()), LocalDateTime.parse(findTodoForm.getFinishDate()), principal.getName());
+        if(findTodoForm.getName().equals("")) return todoRepo.findAllByStatusAndDateBetweenAndUserLogin(Status.valueOf(findTodoForm.getStatus()),
+                LocalDateTime.parse(findTodoForm.getStartDate()), LocalDateTime.parse(findTodoForm.getFinishDate()), principal.getName());
+        if(findTodoForm.getStatus().equals("all")) return todoRepo.findAllByNameAndDateBetweenAndUserLogin(findTodoForm.getName(),
+                LocalDateTime.parse(findTodoForm.getStartDate()), LocalDateTime.parse(findTodoForm.getFinishDate()), principal.getName());
 
-        return todoRepo.findAllByStatusAndNameAndDateBetween(
+        return todoRepo.findAllByStatusAndNameAndDateBetweenAndUserLogin(
                 Status.valueOf(findTodoForm.getStatus()), findTodoForm.getName(),
-                findTodoForm.getStartDate(), findTodoForm.getFinishDate());
-    }}
+                LocalDateTime.parse(findTodoForm.getStartDate()), LocalDateTime.parse(findTodoForm.getFinishDate()), principal.getName());
+    }
+    public void export(HttpServletResponse response, Principal principal)  throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=todos_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        List<Todo> todoList = listAll(principal.getName());
+        TodoExcelExporterService excelExporter = new TodoExcelExporterService(todoList);
+        excelExporter.export(response);
+    }
+}

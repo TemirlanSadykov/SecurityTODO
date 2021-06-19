@@ -63,8 +63,8 @@ public class AdminController {
     }
 
     @PostMapping("/todo")
-    public String todo(@Valid TodoForm todoForm, Principal principal,
-                       BindingResult validationResult, RedirectAttributes attributes) {
+    public String todo(@Valid TodoForm todoForm,
+                       BindingResult validationResult, RedirectAttributes attributes, Principal principal) {
 
         if (validationResult.hasFieldErrors()) {
             attributes.addFlashAttribute("errors", validationResult.getFieldErrors());

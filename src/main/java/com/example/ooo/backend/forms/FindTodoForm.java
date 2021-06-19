@@ -16,6 +16,6 @@ public class FindTodoForm {
 
     private String name;
 
-    private Date startDate;
-    private Date finishDate;
+    private String startDate;
+    private String finishDate;
 }

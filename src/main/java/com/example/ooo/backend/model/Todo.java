@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Types;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -21,7 +22,7 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date date;
+    private LocalDateTime date;
 
     @NotBlank(message = "Обязательное поле")
     @Column(length = 64)

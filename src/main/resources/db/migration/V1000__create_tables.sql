@@ -8,10 +8,9 @@ CREATE TABLE users (
                        role_id BIGINT NOT NULL,
                        PRIMARY KEY (id)
 );
-create type Status as enum ('NEW', 'IN_PROCESS', 'DONE');
 CREATE TABLE todos (
                        id serial NOT NULL,
-                       date TIMESTAMP NOT NULL,
+                       date DATE NOT NULL,
                        name VARCHAR(64) NOT NULL,
                        description VARCHAR(256) NOT NULL,
                        status VARCHAR(32),

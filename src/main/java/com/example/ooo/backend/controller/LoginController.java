@@ -37,13 +37,13 @@ public class LoginController {
     @GetMapping("/")
     public String login(Model model, @RequestParam(required = false, defaultValue = "false") Boolean error, Principal principal) {
         model.addAttribute("error", error);
-        return "user/login";
+        return "login";
     }
 
     @GetMapping("/register")
     public String register(Model model) {
         model.addAttribute("role", roleService.getAll());
-        return "user/register";
+        return "register";
     }
 
     @PostMapping("/register")
