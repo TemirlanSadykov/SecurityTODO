@@ -10,10 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.springframework.data.domain.Pageable;
@@ -116,18 +113,28 @@ public class TodoController {
     @PostMapping("/search")
     public String search(FindTodoForm findTodoForm, RedirectAttributes attributes, Principal principal) {
         attributes.addFlashAttribute("items", todoService.findTodo(findTodoForm, principal));
+        attributes.addFlashAttribute("FindTodoForm", findTodoForm);
         return "redirect:/"+userService.checkUserRole(principal)+"/todo/search/find";
     }
 
     @GetMapping("/search/find")
-    public String searchFind(Model model, Principal principal) {
+    public String searchFind(Model model, Principal principal, @ModelAttribute("FindTodoForm") FindTodoForm form) {
         model.addAttribute("userName", principal.getName());
         model.addAttribute("link", userService.checkUserRole(principal));
+        model.addAttribute("name", form.getName());
+        model.addAttribute("status", form.getStatus());
+        model.addAttribute("startDate", form.getStartDate());
+        model.addAttribute("finishDate", form.getFinishDate());
 
         return "todo/searchFind";
     }
+    @PostMapping("/export")
+    public String export(RedirectAttributes attributes, Principal principal, FindTodoForm form){
+        attributes.addFlashAttribute("FindTodoForm", form);
+        return "redirect:/"+userService.checkUserRole(principal)+"/todo/export";
+    }
     @GetMapping("/export")
-    public void export(HttpServletResponse response, Principal principal) throws IOException {
-        todoService.export(response, principal);
+    public void export(HttpServletResponse response, Principal principal, @ModelAttribute("FindTodoForm") FindTodoForm form) throws IOException {
+        todoService.export(response, principal, form);
     }
 }

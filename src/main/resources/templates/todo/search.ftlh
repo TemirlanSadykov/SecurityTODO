@@ -31,7 +31,7 @@
             </div>
             <div class="form-group">
                 <label>Выберите дату - "От":</label>
-                <input type="datetime-local" name="startDate" class="form-control">
+                <input type="date" name="startDate" class="form-control">
                 <#if errors??>
                     <#list errors as fieldError>
                         <#if fieldError.field == 'startDate'>
@@ -42,7 +42,7 @@
             </div>
             <div class="form-group">
                 <label>Выберите дату- "До":</label>
-                <input type="datetime-local" name="finishDate" class="form-control">
+                <input type="date" name="finishDate" class="form-control">
                 <#if errors??>
                     <#list errors as fieldError>
                         <#if fieldError.field == 'finishDate'>

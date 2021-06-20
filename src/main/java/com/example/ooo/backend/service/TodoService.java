@@ -104,7 +104,7 @@ public class TodoService {
                 Status.valueOf(findTodoForm.getStatus()), findTodoForm.getName(),
                 LocalDateTime.parse(findTodoForm.getStartDate()), LocalDateTime.parse(findTodoForm.getFinishDate()), principal.getName());
     }
-    public void export(HttpServletResponse response, Principal principal)  throws IOException {
+    public void export(HttpServletResponse response, Principal principal, FindTodoForm form)  throws IOException {
         response.setContentType("application/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -113,7 +113,7 @@ public class TodoService {
         String headerValue = "attachment; filename=todos_" + currentDateTime + ".xlsx";
         response.setHeader(headerKey, headerValue);
 
-        List<Todo> todoList = listAll(principal.getName());
+        List<Todo> todoList = findTodo(form, principal);
         TodoExcelExporterService excelExporter = new TodoExcelExporterService(todoList);
         excelExporter.export(response);
     }

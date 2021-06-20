@@ -1,6 +1,7 @@
 package com.example.ooo.backend.service;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.servlet.ServletOutputStream;
@@ -70,7 +71,8 @@ public class TodoExcelExporterService {
             Row row = sheet.createRow(rowCount++);
             int columnCount = 0;
 
-            createCell(row, columnCount++, todo.getDate().toString(), style);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
+            createCell(row, columnCount++, todo.getDate().format(formatter), style);
             createCell(row, columnCount++, todo.getName(), style);
             createCell(row, columnCount++, todo.getDescription(), style);
             createCell(row, columnCount++, todo.getStatus().toString(), style);
