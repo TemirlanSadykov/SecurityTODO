@@ -53,7 +53,7 @@ public class TodoExcelExporterService {
             cell.setCellValue((Boolean) value);
         } else if (value instanceof Long) {
             cell.setCellValue((Long) value);
-        }else {
+        } else {
             cell.setCellValue((String) value);
         }
         cell.setCellStyle(style);

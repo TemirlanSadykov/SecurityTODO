@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService userDetailsService() throws InternalAuthenticationServiceException, NoSuchElementException {
         return new UserDetailsServiceImp();
-    };
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

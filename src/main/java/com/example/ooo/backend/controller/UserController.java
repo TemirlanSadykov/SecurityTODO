@@ -29,6 +29,7 @@ public class UserController {
         model.addAttribute("userName", principal.getName());
         return "user/user";
     }
+
     @GetMapping("/admin")
     public String adminPage(Model model, Principal principal) {
         model.addAttribute("userName", principal.getName());

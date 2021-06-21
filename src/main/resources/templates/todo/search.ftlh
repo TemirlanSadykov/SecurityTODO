@@ -20,7 +20,7 @@
             </div>
             <div class="form-group">
                 <label>Введите название:</label>
-                <input type="text" name="name" class="form-control" placeholder="Название">
+                <input type="text" name="name" class="form-control" placeholder="Название" value="">
                 <#if errors??>
                     <#list errors as fieldError>
                         <#if fieldError.field == 'name'>
@@ -31,7 +31,7 @@
             </div>
             <div class="form-group">
                 <label>Выберите дату - "От":</label>
-                <input type="date" name="startDate" class="form-control">
+                <input type="datetime-local" name="startDate" class="form-control">
                 <#if errors??>
                     <#list errors as fieldError>
                         <#if fieldError.field == 'startDate'>
@@ -42,7 +42,7 @@
             </div>
             <div class="form-group">
                 <label>Выберите дату- "До":</label>
-                <input type="date" name="finishDate" class="form-control">
+                <input type="datetime-local" name="finishDate" class="form-control">
                 <#if errors??>
                     <#list errors as fieldError>
                         <#if fieldError.field == 'finishDate'>

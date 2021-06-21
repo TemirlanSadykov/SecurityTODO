@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.security.Principal;
 
 @Controller
-@RequestMapping(value={"/user/todo", "/admin/todo"})
+@RequestMapping(value = {"/user/todo", "/admin/todo"})
 @AllArgsConstructor
 public class TodoController {
 
@@ -45,11 +45,11 @@ public class TodoController {
 
         if (validationResult.hasErrors()) {
             attributes.addFlashAttribute("errors", validationResult.getFieldErrors());
-            return "redirect:/"+userService.checkUserRole(principal)+"/todo";
+            return "redirect:/" + userService.checkUserRole(principal) + "/todo";
         }
 
         todoService.createTodo(todoForm, principal.getName());
-        return "redirect:/"+userService.checkUserRole(principal);
+        return "redirect:/" + userService.checkUserRole(principal);
     }
 
     @GetMapping("/todos")
@@ -68,7 +68,7 @@ public class TodoController {
     public String deleteTodo(@PathVariable Long id, Principal principal) {
         todoService.delete(id);
 
-        return "redirect:/"+userService.checkUserRole(principal)+"/todo/todos";
+        return "redirect:/" + userService.checkUserRole(principal) + "/todo/todos";
     }
 
     @GetMapping("/edit/{id}")
@@ -86,11 +86,11 @@ public class TodoController {
                            BindingResult validationResult, RedirectAttributes attributes, Principal principal) {
         if (validationResult.hasFieldErrors()) {
             attributes.addFlashAttribute("errors", validationResult.getFieldErrors());
-            return "redirect:/"+userService.checkUserRole(principal)+"/todo/edit/" + todoForm.getId();
+            return "redirect:/" + userService.checkUserRole(principal) + "/todo/edit/" + todoForm.getId();
         }
 
         todoService.editTodo(todoForm);
-        return "redirect:/"+userService.checkUserRole(principal)+"/todo/todos";
+        return "redirect:/" + userService.checkUserRole(principal) + "/todo/todos";
     }
 
     @GetMapping("/open/{id}")
@@ -101,6 +101,7 @@ public class TodoController {
 
         return "todo/openTodo";
     }
+
     @GetMapping("/search")
     public String search(Model model, Principal principal) {
         model.addAttribute("userName", principal.getName());
@@ -114,7 +115,7 @@ public class TodoController {
     public String search(FindTodoForm findTodoForm, RedirectAttributes attributes, Principal principal) {
         attributes.addFlashAttribute("items", todoService.findTodo(findTodoForm, principal));
         attributes.addFlashAttribute("FindTodoForm", findTodoForm);
-        return "redirect:/"+userService.checkUserRole(principal)+"/todo/search/find";
+        return "redirect:/" + userService.checkUserRole(principal) + "/todo/search/find";
     }
 
     @GetMapping("/search/find")
@@ -128,11 +129,13 @@ public class TodoController {
 
         return "todo/searchFind";
     }
+
     @PostMapping("/export")
-    public String export(RedirectAttributes attributes, Principal principal, FindTodoForm form){
+    public String export(RedirectAttributes attributes, Principal principal, FindTodoForm form) {
         attributes.addFlashAttribute("FindTodoForm", form);
-        return "redirect:/"+userService.checkUserRole(principal)+"/todo/export";
+        return "redirect:/" + userService.checkUserRole(principal) + "/todo/export";
     }
+
     @GetMapping("/export")
     public void export(HttpServletResponse response, Principal principal, @ModelAttribute("FindTodoForm") FindTodoForm form) throws IOException {
         todoService.export(response, principal, form);

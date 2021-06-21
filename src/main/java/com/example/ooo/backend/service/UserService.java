@@ -27,15 +27,15 @@ public class UserService {
     private final RoleService roleService;
 
     public void createUser(UserLoginForm userLoginForm) {
-            User user = User.builder()
-                    .login(userLoginForm.getLogin())
-                    .email(userLoginForm.getEmail())
-                    .password(encoder.encode(userLoginForm.getPassword()))
-                    .role(roleRepo.findById(userLoginForm.getRole()).get())
-                    .activate(true)
-                    .build();
+        User user = User.builder()
+                .login(userLoginForm.getLogin())
+                .email(userLoginForm.getEmail())
+                .password(encoder.encode(userLoginForm.getPassword()))
+                .role(roleRepo.findById(userLoginForm.getRole()).get())
+                .activate(true)
+                .build();
 
-            userRepo.save(user);
+        userRepo.save(user);
     }
 
     public Page<UserDTO> findUsersByRole(Pageable pageable, String role) {
@@ -54,7 +54,7 @@ public class UserService {
         }
     }
 
-    public String giveRoles(Principal principal){
+    public String giveRoles(Principal principal) {
         String login = principal.getName();
         for (int i = 0; i < roleService.getAll().size(); i++) {
             if (userRepo.existsByLoginAndRoleId(login, roleService.getAll().get(i).getId())) {
@@ -63,7 +63,8 @@ public class UserService {
         }
         return "/";
     }
-    public String checkUserRole(Principal principal){
+
+    public String checkUserRole(Principal principal) {
         return userRepo.findByLogin(principal.getName()).get().getRole().getLink();
     }
 }

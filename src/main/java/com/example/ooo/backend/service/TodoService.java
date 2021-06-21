@@ -20,6 +20,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -27,8 +29,9 @@ public class TodoService {
 
     private final TodoRepo todoRepo;
     private final UserRepo userRepo;
+    private final PredicateService predicateService;
 
-    public void createTodo(TodoForm todoForm, String login) throws NullPointerException{
+    public void createTodo(TodoForm todoForm, String login) throws NullPointerException {
         User user = userRepo.findByLogin(login).get();
 
         Todo todo = Todo.builder()
@@ -71,13 +74,13 @@ public class TodoService {
         }
     }*/
 
-    public List<Status> getStatus(){
+    public List<Status> getStatus() {
         List<Status> status = new ArrayList<>();
         Collections.addAll(status, Status.values());
         return status;
     }
 
-    public List<Todo> listAll(String login){
+    public List<Todo> listAll(String login) {
         return todoRepo.findAllByUserLogin(login);
     }
 
@@ -90,21 +93,10 @@ public class TodoService {
     }
 
     public List<Todo> findTodo(FindTodoForm findTodoForm, Principal principal) {
-        if(findTodoForm.getStatus().equals("all") && findTodoForm.getName().equals("") && findTodoForm.getStartDate().equals("") && findTodoForm.getFinishDate().equals("")) return todoRepo.findAllByUserLogin(principal.getName());
-        if(findTodoForm.getStatus().equals("all") && findTodoForm.getName().equals("") && findTodoForm.getStartDate().equals("")) return todoRepo.findAllByDateBeforeAndUserLogin(LocalDateTime.parse(findTodoForm.getFinishDate()), principal.getName());
-        if(findTodoForm.getStatus().equals("all") && findTodoForm.getName().equals("") && findTodoForm.getFinishDate().equals("")) return todoRepo.findAllByDateAfterAndUserLogin(LocalDateTime.parse(findTodoForm.getStartDate()), principal.getName());
-        if(findTodoForm.getStatus().equals("all") && findTodoForm.getName().equals("")) return todoRepo.findAllByDateBetweenAndUserLogin(
-                LocalDateTime.parse(findTodoForm.getStartDate()), LocalDateTime.parse(findTodoForm.getFinishDate()), principal.getName());
-        if(findTodoForm.getName().equals("")) return todoRepo.findAllByStatusAndDateBetweenAndUserLogin(Status.valueOf(findTodoForm.getStatus()),
-                LocalDateTime.parse(findTodoForm.getStartDate()), LocalDateTime.parse(findTodoForm.getFinishDate()), principal.getName());
-        if(findTodoForm.getStatus().equals("all")) return todoRepo.findAllByNameAndDateBetweenAndUserLogin(findTodoForm.getName(),
-                LocalDateTime.parse(findTodoForm.getStartDate()), LocalDateTime.parse(findTodoForm.getFinishDate()), principal.getName());
-
-        return todoRepo.findAllByStatusAndNameAndDateBetweenAndUserLogin(
-                Status.valueOf(findTodoForm.getStatus()), findTodoForm.getName(),
-                LocalDateTime.parse(findTodoForm.getStartDate()), LocalDateTime.parse(findTodoForm.getFinishDate()), principal.getName());
+        return predicateService.filterTodo(principal, findTodoForm);
     }
-    public void export(HttpServletResponse response, Principal principal, FindTodoForm form)  throws IOException {
+
+    public void export(HttpServletResponse response, Principal principal, FindTodoForm form) throws IOException {
         response.setContentType("application/octet-stream");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());

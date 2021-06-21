@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -27,4 +28,7 @@ public interface TodoRepo extends JpaRepository<Todo, Long> {
     List<Todo> findAllByStatusAndDateBetweenAndUserLogin(Status status, LocalDateTime start, LocalDateTime finish, String login);
 
     List<Todo> findAllByUserLogin(String login);
+    List<Todo> findAllByNameAndUserLogin(String name, String login);
+    List<Todo> findAllByStatusAndUserLogin(Status status, String login);
+
 }
