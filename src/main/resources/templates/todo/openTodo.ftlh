@@ -12,7 +12,7 @@
                 <label><h3>Описание:</h3></label>
                 <p>${todo.description}</p>
             </div>
-            <a href="/${link}/todo/todos" class="btn btn-primary btn-block">Выйти</a>
+            <a href="/todo/todos" class="btn btn-primary btn-block">Выйти</a>
 
     </div>
 </@main.renderWith>

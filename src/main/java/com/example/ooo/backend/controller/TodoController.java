@@ -7,6 +7,9 @@ import com.example.ooo.backend.service.PropertiesService;
 import com.example.ooo.backend.service.TodoService;
 import com.example.ooo.backend.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.springframework.data.domain.Pageable;
+import org.thymeleaf.exceptions.TemplateInputException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +26,7 @@ import java.io.IOException;
 import java.security.Principal;
 
 @Controller
-@RequestMapping(value = {"/user/todo", "/admin/todo"})
+@RequestMapping("/todo")
 @AllArgsConstructor
 public class TodoController {
 
@@ -34,8 +38,6 @@ public class TodoController {
     @GetMapping
     public String createTodo(Model model, Principal principal) {
         model.addAttribute("userName", principal.getName());
-        model.addAttribute("link", userService.checkUserRole(principal));
-
         return "todo/createTodo";
     }
 
@@ -45,11 +47,11 @@ public class TodoController {
 
         if (validationResult.hasErrors()) {
             attributes.addFlashAttribute("errors", validationResult.getFieldErrors());
-            return "redirect:/" + userService.checkUserRole(principal) + "/todo";
+            return "redirect:/todo";
         }
 
         todoService.createTodo(todoForm, principal.getName());
-        return "redirect:/" + userService.checkUserRole(principal);
+        return "redirect:/default";
     }
 
     @GetMapping("/todos")
@@ -64,11 +66,9 @@ public class TodoController {
         return "todo/getTodos";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteTodo(@PathVariable Long id, Principal principal) {
+    @DeleteMapping("/todos/delete/{id}")
+    public void deleteTodo(@PathVariable Long id) throws TemplateInputException {
         todoService.delete(id);
-
-        return "redirect:/" + userService.checkUserRole(principal) + "/todo/todos";
     }
 
     @GetMapping("/edit/{id}")
@@ -76,28 +76,26 @@ public class TodoController {
         model.addAttribute("userName", principal.getName());
         model.addAttribute("todo", todoService.get(id));
         model.addAttribute("status", todoService.getStatus());
-        model.addAttribute("link", userService.checkUserRole(principal));
 
         return "todo/editTodo";
     }
 
     @PostMapping("/edit")
     public String editTodo(@Valid TodoForm todoForm,
-                           BindingResult validationResult, RedirectAttributes attributes, Principal principal) {
+                           BindingResult validationResult, RedirectAttributes attributes) {
         if (validationResult.hasFieldErrors()) {
             attributes.addFlashAttribute("errors", validationResult.getFieldErrors());
-            return "redirect:/" + userService.checkUserRole(principal) + "/todo/edit/" + todoForm.getId();
+            return "redirect:/todo/edit/" + todoForm.getId();
         }
 
         todoService.editTodo(todoForm);
-        return "redirect:/" + userService.checkUserRole(principal) + "/todo/todos";
+        return "redirect:/todo/todos";
     }
 
     @GetMapping("/open/{id}")
     public String openTodo(Model model, Principal principal, @PathVariable Long id) {
         model.addAttribute("userName", principal.getName());
         model.addAttribute("todo", todoService.get(id));
-        model.addAttribute("link", userService.checkUserRole(principal));
 
         return "todo/openTodo";
     }
@@ -106,7 +104,6 @@ public class TodoController {
     public String search(Model model, Principal principal) {
         model.addAttribute("userName", principal.getName());
         model.addAttribute("status", todoService.getStatus());
-        model.addAttribute("link", userService.checkUserRole(principal));
 
         return "todo/search";
     }
@@ -115,7 +112,7 @@ public class TodoController {
     public String search(FindTodoForm findTodoForm, RedirectAttributes attributes, Principal principal) {
         attributes.addFlashAttribute("items", todoService.findTodo(findTodoForm, principal));
         attributes.addFlashAttribute("FindTodoForm", findTodoForm);
-        return "redirect:/" + userService.checkUserRole(principal) + "/todo/search/find";
+        return "redirect:/todo/search/find";
     }
 
     @GetMapping("/search/find")
@@ -131,9 +128,9 @@ public class TodoController {
     }
 
     @PostMapping("/export")
-    public String export(RedirectAttributes attributes, Principal principal, FindTodoForm form) {
+    public String export(RedirectAttributes attributes, FindTodoForm form) {
         attributes.addFlashAttribute("FindTodoForm", form);
-        return "redirect:/" + userService.checkUserRole(principal) + "/todo/export";
+        return "redirect:/todo/export";
     }
 
     @GetMapping("/export")
