@@ -18,7 +18,5 @@ public class TodoForm {
     @Size(max = 256, message = "Вы превысили лимит в 256 слова")
     private String description;
 
-    private Long id;
-
     private String status;
 }

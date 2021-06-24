@@ -23,9 +23,9 @@
                         <td>${todo.status}</td>
                         <td><button onclick="sendFetch()" style="color:red;">Удалить</button></td>
                             <script>
-                            function sendFetch() {
+                            async function sendFetch() {
                                 var href = window.location.href;
-                                fetch(href+'/delete/'+${todo.id}, {
+                                await fetch(href+'/delete/'+${todo.id}, {
                                     method: 'DELETE',
                                 })
                                     .then(location.replace(href))

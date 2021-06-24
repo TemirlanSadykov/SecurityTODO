@@ -2,18 +2,15 @@
 <@main.renderWith>
 <#--<@main.renderWith scripts=["scripts/.js"]>-->
     <div class="mx-auto mt-3 w-50">
-        <form id="login-form" action="/todo/edit" method="post">
-
+        <form id="editTodoForm">
             <#if _csrf??>
                 <input type="hidden" name="${(_csrf.parameterName)!'csrf'}" value="${(_csrf.token)!'--no-token--'}"/>
             </#if>
 
-            <input type="hidden" name="id" value="${todo.id}">
-
             <h3 class="text-center">Редактировать TODO</h3>
             <div class="form-group">
                 <label>Изменить название:</label>
-                <input type="text" name="name" class="form-control" placeholder="Название" value="${todo.name}">
+                <input type="text" name="name" id="name" class="form-control" placeholder="Название" value="${todo.name}">
                 <#if errors??>
                     <#list errors as fieldError>
                         <#if fieldError.field == 'name'>
@@ -24,7 +21,7 @@
             </div>
             <div class="form-group">
                 <label>Изменить описание:</label>
-                    <p><textarea name="description" class="form-control" placeholder="Описание">${todo.description}</textarea></p>
+                    <p><textarea name="description" id="description" class="form-control" placeholder="Описание">${todo.description}</textarea></p>
                 <#if errors??>
                     <#list errors as fieldError>
                         <#if fieldError.field == 'description'>
@@ -41,7 +38,14 @@
                     </#list>
                 </select>
             </div>
-            <button name="register" class="btn btn-primary btn-block">Сохранить</button>
+            <button name="register" class="btn btn-primary btn-block" onclick="sendForm()">Сохранить</button>
         </form>
     </div>
 </@main.renderWith>
+<script>
+    function sendForm() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('PUT', window.location.href, true);
+        xhr.send(new FormData(document.getElementById('editTodoForm')));
+    }
+</script>

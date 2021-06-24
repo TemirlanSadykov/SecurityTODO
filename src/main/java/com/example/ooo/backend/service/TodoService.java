@@ -46,8 +46,8 @@ public class TodoService {
         todoRepo.save(todo);
     }
 
-    public void editTodo(TodoForm todoForm) {
-        Todo todo = todoRepo.findById(todoForm.getId()).get();
+    public void editTodo(TodoForm todoForm, Long id)  throws IllegalArgumentException{
+        Todo todo = todoRepo.findById(id).get();
         todo.setName(todoForm.getName());
         todo.setDescription(todoForm.getDescription());
         todo.setStatus(Status.valueOf(todoForm.getStatus()));

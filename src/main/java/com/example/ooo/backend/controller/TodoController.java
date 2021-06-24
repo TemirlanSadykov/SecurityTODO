@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.springframework.data.domain.Pageable;
@@ -80,15 +81,14 @@ public class TodoController {
         return "todo/editTodo";
     }
 
-    @PostMapping("/edit")
+    @PutMapping("/edit/{id}")
     public String editTodo(@Valid TodoForm todoForm,
-                           BindingResult validationResult, RedirectAttributes attributes) {
+                                 BindingResult validationResult, RedirectAttributes attributes, @PathVariable Long id) throws IllegalArgumentException {
         if (validationResult.hasFieldErrors()) {
             attributes.addFlashAttribute("errors", validationResult.getFieldErrors());
-            return "redirect:/todo/edit/" + todoForm.getId();
+            return "redirect:/todo/edit/" + id;
         }
-
-        todoService.editTodo(todoForm);
+        todoService.editTodo(todoForm, id);
         return "redirect:/todo/todos";
     }
 
