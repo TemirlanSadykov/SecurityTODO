@@ -2,18 +2,30 @@ package com.example.ooo.backend.service;
 
 import com.example.ooo.backend.dto.TodoDTO;
 import com.example.ooo.backend.forms.FindTodoForm;
+import com.example.ooo.backend.model.QTodo;
 import com.example.ooo.backend.model.Status;
 import com.example.ooo.backend.model.Todo;
 import com.example.ooo.backend.model.User;
 import com.example.ooo.backend.repository.TodoRepo;
 import com.example.ooo.backend.repository.UserRepo;
 import com.example.ooo.backend.forms.TodoForm;
+import com.google.common.collect.Lists;
+import com.querydsl.core.QueryFactory;
+import com.querydsl.core.support.FetchableQueryBase;
+import com.querydsl.core.support.QueryBase;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.exceptions.TemplateInputException;
 
+import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
@@ -44,6 +56,19 @@ public class TodoService {
                 .build();
 
         todoRepo.save(todo);
+    }
+
+    public List<Todo> getByDate(LocalDateTime startDate, LocalDateTime finishDate) {
+        return Lists.newArrayList(todoRepo.findAll(QTodo.todo.date.between(startDate, finishDate)));
+
+//        EntityManagerFactory emf =
+//                Persistence.createEntityManagerFactory("TestPersistence");
+//        EntityManager em = emf.createEntityManager();
+//        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+//        List<Todo> todos = queryFactory.selectFrom(QTodo.todo)
+//                .where(QTodo.todo.date.between(startDate, finishDate))
+//                .fetch();
+//        return todos;
     }
 
     public void editTodo(TodoForm todoForm, Long id)  throws IllegalArgumentException{

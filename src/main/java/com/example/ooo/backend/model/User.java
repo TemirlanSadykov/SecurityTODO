@@ -11,10 +11,7 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends AbstractEntity {
 
     @NotBlank(message = "Обязательное поле")
     @Column(length = 64)

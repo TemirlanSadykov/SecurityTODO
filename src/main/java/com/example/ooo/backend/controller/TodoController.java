@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/todo")
@@ -110,7 +111,7 @@ public class TodoController {
 
     @PostMapping("/search")
     public String search(FindTodoForm findTodoForm, RedirectAttributes attributes, Principal principal) {
-        attributes.addFlashAttribute("items", todoService.findTodo(findTodoForm, principal));
+        attributes.addFlashAttribute("todos", todoService.getByDate(LocalDateTime.parse(findTodoForm.getStartDate()), LocalDateTime.parse(findTodoForm.getFinishDate())));
         attributes.addFlashAttribute("FindTodoForm", findTodoForm);
         return "redirect:/todo/search/find";
     }

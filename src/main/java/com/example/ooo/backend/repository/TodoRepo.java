@@ -1,5 +1,6 @@
 package com.example.ooo.backend.repository;
 
+import com.example.ooo.backend.model.QTodo;
 import com.example.ooo.backend.model.Status;
 import com.example.ooo.backend.model.Todo;
 import com.example.ooo.backend.model.User;
@@ -17,15 +18,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Transactional
-public interface TodoRepo extends JpaRepository<Todo, Long> {
+public interface TodoRepo extends ExCustomRepository<Todo, QTodo, Long> {
     Page<Todo> findAllByUserLogin(Pageable pageable, String login);
 
-    List<Todo> findAllByStatusAndNameAndDateBetweenAndUserLogin(Status status, String name, LocalDateTime start, LocalDateTime finish, String login);
     List<Todo> findAllByDateBeforeAndUserLogin(LocalDateTime finish, String login);
     List<Todo> findAllByDateAfterAndUserLogin(LocalDateTime start, String login);
-    List<Todo> findAllByDateBetweenAndUserLogin(LocalDateTime start, LocalDateTime finish, String login);
-    List<Todo> findAllByNameAndDateBetweenAndUserLogin(String name, LocalDateTime start, LocalDateTime finish, String login);
-    List<Todo> findAllByStatusAndDateBetweenAndUserLogin(Status status, LocalDateTime start, LocalDateTime finish, String login);
 
     List<Todo> findAllByUserLogin(String login);
     List<Todo> findAllByNameAndUserLogin(String name, String login);

@@ -17,14 +17,23 @@
             </tr>
             </thead>
             <tbody>
-            <#list items as todo>
+            <#list todos as todo>
 
                 <tr>
                     <th scope="row">${todo?counter}</th>
                     <td>${todo.date.format('dd-MMM-yyyy')}</td>
                     <td><a href="/todo/open/${todo.id}">${todo.name}</a></td>
                     <td>${todo.status}</td>
-                    <td><a href="/todo/delete/${todo.id}" style="color:red;">Удалить</a></td>
+                    <td><button onclick="sendFetch()" style="color:red;">Удалить</button></td>
+                    <script>
+                        async function sendFetch() {
+                            var href = window.location.href;
+                            await fetch(href+'/delete/'+${todo.id}, {
+                                method: 'DELETE',
+                            })
+                                .then(location.replace(href))
+                        }
+                    </script>
                     <td><a href="/todo/edit/${todo.id}" style="color:green;">Редактировать</a></td>
 
                 </tr>

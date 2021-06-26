@@ -17,10 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Table(name = "todos")
-public class Todo {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Todo extends AbstractEntity {
 
     private LocalDateTime date;
 
