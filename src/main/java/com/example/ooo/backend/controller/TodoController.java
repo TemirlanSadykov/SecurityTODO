@@ -110,8 +110,8 @@ public class TodoController {
     }
 
     @PostMapping("/search")
-    public String search(FindTodoForm findTodoForm, RedirectAttributes attributes, Principal principal) {
-        attributes.addFlashAttribute("todos", todoService.getByDate(LocalDateTime.parse(findTodoForm.getStartDate()), LocalDateTime.parse(findTodoForm.getFinishDate())));
+    public String search(FindTodoForm findTodoForm, RedirectAttributes attributes) {
+        attributes.addFlashAttribute("todos", todoService.getByDate(findTodoForm));
         attributes.addFlashAttribute("FindTodoForm", findTodoForm);
         return "redirect:/todo/search/find";
     }

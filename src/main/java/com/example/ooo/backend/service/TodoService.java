@@ -10,31 +10,23 @@ import com.example.ooo.backend.repository.TodoRepo;
 import com.example.ooo.backend.repository.UserRepo;
 import com.example.ooo.backend.forms.TodoForm;
 import com.google.common.collect.Lists;
-import com.querydsl.core.QueryFactory;
-import com.querydsl.core.support.FetchableQueryBase;
-import com.querydsl.core.support.QueryBase;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.exceptions.TemplateInputException;
 
-import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -43,6 +35,8 @@ public class TodoService {
     private final TodoRepo todoRepo;
     private final UserRepo userRepo;
     private final PredicateService predicateService;
+    private final Parser parser;
+    private final EntityManager entityManager;
 
     public void createTodo(TodoForm todoForm, String login) throws NullPointerException {
         User user = userRepo.findByLogin(login).get();
@@ -58,17 +52,18 @@ public class TodoService {
         todoRepo.save(todo);
     }
 
-    public List<Todo> getByDate(LocalDateTime startDate, LocalDateTime finishDate) {
-        return Lists.newArrayList(todoRepo.findAll(QTodo.todo.date.between(startDate, finishDate)));
+    @Transactional
+    public List<Todo> getByDate(FindTodoForm findTodoForm) {
+        QTodo qTodo = QTodo.todo;
 
-//        EntityManagerFactory emf =
-//                Persistence.createEntityManagerFactory("TestPersistence");
-//        EntityManager em = emf.createEntityManager();
-//        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-//        List<Todo> todos = queryFactory.selectFrom(QTodo.todo)
-//                .where(QTodo.todo.date.between(startDate, finishDate))
-//                .fetch();
-//        return todos;
+        if (findTodoForm.getStatus().equals("all")){
+            return Lists.newArrayList(
+                    todoRepo.findAll(qTodo.date.between(parser.localDateTimeParser(findTodoForm.getStartDate()), parser.localDateTimeParser(findTodoForm.getFinishDate()))
+                            .and(qTodo.name.eq(findTodoForm.getName())).or(qTodo.date.between(parser.localDateTimeParser(findTodoForm.getStartDate()), parser.localDateTimeParser(findTodoForm.getFinishDate())))));
+        }
+        return Lists.newArrayList(
+                todoRepo.findAll(qTodo.date.between(parser.localDateTimeParser(findTodoForm.getStartDate()), parser.localDateTimeParser(findTodoForm.getFinishDate()))
+                        .andAnyOf(qTodo.name.eq(findTodoForm.getName()), qTodo.status.eq(Status.valueOf(findTodoForm.getStatus())))));
     }
 
     public void editTodo(TodoForm todoForm, Long id)  throws IllegalArgumentException{
@@ -87,10 +82,6 @@ public class TodoService {
         List<Status> status = new ArrayList<>();
         Collections.addAll(status, Status.values());
         return status;
-    }
-
-    public List<Todo> listAll(String login) {
-        return todoRepo.findAllByUserLogin(login);
     }
 
     public void delete(Long id) throws TemplateInputException {

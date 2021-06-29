@@ -7,15 +7,17 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-@Data
 @Entity
-@Builder
+@Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@Builder
 @Table(name = "todos")
 public class Todo extends AbstractEntity {
 
@@ -33,7 +35,7 @@ public class Todo extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

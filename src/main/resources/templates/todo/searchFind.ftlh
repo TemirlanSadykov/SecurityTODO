@@ -4,7 +4,7 @@
     <h3 class="mt-3">Все TODO</h3>
     <form action="/todo/export" method="post">
         <h3>Поиск был произведен по следующим полям</h3>
-        <input name="name" value="${name!''}"><input name="status" value="${status!'all'}"><input name="startDate" type="date" value="${startDate!''}"><input name="finishDate" type="date" value="${finishDate!''}">
+        <input name="name" value="${name!''}"><input name="status" value="${status!'all'}"><input name="startDate" type="datetime-local" value="${startDate!''}"><input name="finishDate" type="datetime-local" value="${finishDate!''}">
         <table class="table table-striped">
             <thead>
             <tr>
