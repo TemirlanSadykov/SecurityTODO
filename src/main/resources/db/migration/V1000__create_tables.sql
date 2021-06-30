@@ -15,6 +15,7 @@ CREATE TABLE todos (
                        description VARCHAR(256) NOT NULL,
                        status VARCHAR(32),
                        user_id BIGINT NOT NULL,
+                       term TIMESTAMP,
                        PRIMARY KEY (id)
 );
 CREATE TABLE roles (

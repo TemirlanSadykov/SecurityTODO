@@ -35,7 +35,6 @@ public class TodoController {
     private final PropertiesService propertiesService;
     private final UserService userService;
     private final TodoService todoService;
-    private final UserRepo userRepo;
 
     @GetMapping
     public String createTodo(Model model, Principal principal) {

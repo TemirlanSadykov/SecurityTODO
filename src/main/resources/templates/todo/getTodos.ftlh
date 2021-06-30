@@ -7,6 +7,7 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Дата создания</th>
+            <th scope="col">Срок</th>
             <th scope="col">Название</th>
             <th scope="col">Статус</th>
             <th scope="col">Удаление</th>
@@ -19,6 +20,7 @@
                     <tr>
                         <th scope="row">${todo?counter}</th>
                         <td>${todo.date.format('dd-MMM-yyyy')}</td>
+                        <td>${todo.term.format('dd-MMM-yyyy HH:mm')}</td>
                         <td><a href="/todo/open/${todo.id}">${todo.name}</a></td>
                         <td>${todo.status}</td>
                         <td><button onclick="sendFetch${todo.id?string}()" style="color:red;">Удалить</button></td>

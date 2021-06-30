@@ -71,8 +71,10 @@ public class TodoExcelExporterService {
             Row row = sheet.createRow(rowCount++);
             int columnCount = 0;
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy");
-            createCell(row, columnCount++, todo.getDate().format(formatter), style);
+            DateTimeFormatter formatterForDate = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+            DateTimeFormatter formatterForTerm = DateTimeFormatter.ofPattern("dd-MMM-yyyy HH:MM");
+            createCell(row, columnCount++, todo.getDate().format(formatterForDate), style);
+            createCell(row, columnCount++, todo.getTerm().format(formatterForTerm), style);
             createCell(row, columnCount++, todo.getName(), style);
             createCell(row, columnCount++, todo.getDescription(), style);
             createCell(row, columnCount++, todo.getStatus().toString(), style);

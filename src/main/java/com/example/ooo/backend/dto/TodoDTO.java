@@ -18,6 +18,7 @@ public class TodoDTO {
     private String name;
     private String description;
     private Status status;
+    private LocalDateTime term;
     private UserDTO userDTO;
 
     public static TodoDTO from(Todo todo) {
@@ -27,6 +28,7 @@ public class TodoDTO {
                 .name(todo.getName())
                 .description(todo.getDescription())
                 .status(todo.getStatus())
+                .term(todo.getTerm())
                 .userDTO(UserDTO.from(todo.getUser()))
                 .build();
     }

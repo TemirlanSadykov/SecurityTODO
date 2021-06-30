@@ -38,6 +38,17 @@
                     </#list>
                 </select>
             </div>
+            <div class="form-group">
+                <label>Изменить срок:</label>
+                <input type="datetime-local" name="term" value="${todo.term}">
+                <#if errors??>
+                    <#list errors as fieldError>
+                        <#if fieldError.field == 'term'>
+                            <div class="alert alert-warning mt-1" role="alert">${fieldError.defaultMessage!'-- no message --'}</div>
+                        </#if>
+                    </#list>
+                </#if>
+            </div>
             <button class="btn btn-primary btn-block" onclick="sendForm()">Сохранить</button>
         </form>
     </div>

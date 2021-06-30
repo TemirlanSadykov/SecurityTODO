@@ -5,6 +5,16 @@
 
             <h3 class="text-center">TODO:</h3>
             <div class="form-group">
+                <label><h3>Дата создания:</h3></label>
+                <p>${todo.date.format('dd-MMM-yyyy')}</p>
+                <label><h3>Срок:</h3></label>
+                <p>${todo.term.format('dd-MMM-yyyy HH:mm')}</p>
+            </div>
+            <div class="form-group">
+                <label><h3>Статус:</h3></label>
+                <p>${todo.status}</p>
+            </div>
+            <div class="form-group">
                 <label><h3>Название:</h3></label>
                 <p>${todo.name}</p>
             </div>

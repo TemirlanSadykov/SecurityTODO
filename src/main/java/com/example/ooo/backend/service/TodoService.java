@@ -32,7 +32,6 @@ public class TodoService {
     private final TodoRepo todoRepo;
     private final UserRepo userRepo;
     private final Parser parser;
-    private final EntityManager entityManager;
 
     public void createTodo(TodoForm todoForm, String login) throws NullPointerException {
         User user = userRepo.findByLogin(login).get();
@@ -43,6 +42,7 @@ public class TodoService {
                 .description(todoForm.getDescription())
                 .status(Status.NEW)
                 .user(user)
+                .term(LocalDateTime.parse(todoForm.getTerm()))
                 .build();
 
         todoRepo.save(todo);
@@ -69,6 +69,7 @@ public class TodoService {
         todo.setName(todoForm.getName());
         todo.setDescription(todoForm.getDescription());
         todo.setStatus(Status.valueOf(todoForm.getStatus()));
+        todo.setTerm(LocalDateTime.parse(todoForm.getTerm()));
         todoRepo.save(todo);
     }
 

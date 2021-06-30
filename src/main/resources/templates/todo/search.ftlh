@@ -41,7 +41,7 @@
                 </#if>
             </div>
             <div class="form-group">
-                <label>Выберите дату- "До":</label>
+                <label>Выберите дату - "До":</label>
                 <input type="datetime-local" name="finishDate" class="form-control">
                 <#if errors??>
                     <#list errors as fieldError>

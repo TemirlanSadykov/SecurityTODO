@@ -39,4 +39,6 @@ public class Todo extends AbstractEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private LocalDateTime term;
+
 }

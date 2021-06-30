@@ -22,10 +22,21 @@
             </div>
             <div class="form-group">
                 <label>Введите описание:</label>
-                    <p><textarea name="description" class="form-control" placeholder="Описание" autofocus></textarea></p>
+                    <p><textarea name="description" class="form-control" placeholder="Описание"></textarea></p>
                 <#if errors??>
                     <#list errors as fieldError>
                         <#if fieldError.field == 'description'>
+                            <div class="alert alert-warning mt-1" role="alert">${fieldError.defaultMessage!'-- no message --'}</div>
+                        </#if>
+                    </#list>
+                </#if>
+            </div>
+            <div class="form-group">
+                <label>Введите срок:</label>
+                <input type="datetime-local" name="term">
+                <#if errors??>
+                    <#list errors as fieldError>
+                        <#if fieldError.field == 'term'>
                             <div class="alert alert-warning mt-1" role="alert">${fieldError.defaultMessage!'-- no message --'}</div>
                         </#if>
                     </#list>
