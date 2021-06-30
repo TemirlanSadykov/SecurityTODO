@@ -69,9 +69,8 @@ public class TodoController {
     }
 
     @DeleteMapping("/todos/delete/{id}")
-    public ModelAndView deleteTodo(@PathVariable Long id) throws TemplateInputException {
+    public void deleteTodo(@PathVariable Long id) throws TemplateInputException {
         todoService.delete(id);
-        return new ModelAndView("redirect:/todo/todos");
     }
 
     @GetMapping("/edit/{id}")

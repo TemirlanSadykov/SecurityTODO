@@ -21,11 +21,11 @@
                         <td>${todo.date.format('dd-MMM-yyyy')}</td>
                         <td><a href="/todo/open/${todo.id}">${todo.name}</a></td>
                         <td>${todo.status}</td>
-                        <td><button onclick="sendFetch()" style="color:red;">Удалить</button></td>
+                        <td><button onclick="sendFetch${todo.id?string}()" style="color:red;">Удалить</button></td>
                             <script>
-                            async function sendFetch() {
+                             function sendFetch${todo.id?string}() {
                                 var href = window.location.href;
-                                await fetch(href+'/delete/'+${todo.id}, {
+                                 fetch(href+'/delete/'+${todo.id?string}, {
                                     method: 'DELETE',
                                 })
                                     .then(location.replace(href))
