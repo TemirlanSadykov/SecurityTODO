@@ -38,7 +38,7 @@
                     </#list>
                 </select>
             </div>
-            <button name="register" class="btn btn-primary btn-block" onclick="sendForm()">Сохранить</button>
+            <button class="btn btn-primary btn-block" onclick="sendForm()">Сохранить</button>
         </form>
     </div>
 </@main.renderWith>

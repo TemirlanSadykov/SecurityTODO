@@ -69,8 +69,9 @@ public class TodoController {
     }
 
     @DeleteMapping("/todos/delete/{id}")
-    public void deleteTodo(@PathVariable Long id) throws TemplateInputException {
+    public ModelAndView deleteTodo(@PathVariable Long id) throws TemplateInputException {
         todoService.delete(id);
+        return new ModelAndView("redirect:/todo/todos");
     }
 
     @GetMapping("/edit/{id}")
@@ -83,14 +84,14 @@ public class TodoController {
     }
 
     @PutMapping("/edit/{id}")
-    public String editTodo(@Valid TodoForm todoForm,
+    public ModelAndView editTodo(@Valid TodoForm todoForm,
                                  BindingResult validationResult, RedirectAttributes attributes, @PathVariable Long id) throws IllegalArgumentException {
         if (validationResult.hasFieldErrors()) {
             attributes.addFlashAttribute("errors", validationResult.getFieldErrors());
-            return "redirect:/todo/edit/" + id;
+            return new ModelAndView( "redirect:/todo/edit/" + id);
         }
         todoService.editTodo(todoForm, id);
-        return "redirect:/todo/todos";
+        return new ModelAndView("redirect:/todo/todos");
     }
 
     @GetMapping("/open/{id}")
