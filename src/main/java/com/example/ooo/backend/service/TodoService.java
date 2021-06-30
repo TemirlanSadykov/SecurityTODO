@@ -2,10 +2,7 @@ package com.example.ooo.backend.service;
 
 import com.example.ooo.backend.dto.TodoDTO;
 import com.example.ooo.backend.forms.FindTodoForm;
-import com.example.ooo.backend.model.QTodo;
-import com.example.ooo.backend.model.Status;
-import com.example.ooo.backend.model.Todo;
-import com.example.ooo.backend.model.User;
+import com.example.ooo.backend.model.*;
 import com.example.ooo.backend.repository.TodoRepo;
 import com.example.ooo.backend.repository.UserRepo;
 import com.example.ooo.backend.forms.TodoForm;
@@ -34,7 +31,6 @@ public class TodoService {
 
     private final TodoRepo todoRepo;
     private final UserRepo userRepo;
-    private final PredicateService predicateService;
     private final Parser parser;
     private final EntityManager entityManager;
 
@@ -53,17 +49,19 @@ public class TodoService {
     }
 
     @Transactional
-    public List<Todo> getByDate(FindTodoForm findTodoForm) {
+    public List<Todo> findTodo(FindTodoForm findTodoForm, Principal principal) {
         QTodo qTodo = QTodo.todo;
 
         if (findTodoForm.getStatus().equals("all")){
             return Lists.newArrayList(
-                    todoRepo.findAll(qTodo.date.between(parser.localDateTimeParser(findTodoForm.getStartDate()), parser.localDateTimeParser(findTodoForm.getFinishDate()))
-                            .and(qTodo.name.eq(findTodoForm.getName())).or(qTodo.date.between(parser.localDateTimeParser(findTodoForm.getStartDate()), parser.localDateTimeParser(findTodoForm.getFinishDate())))));
+                    todoRepo.findAll(qTodo.user.login.eq(principal.getName()).and(
+                            qTodo.date.between(parser.localDateTimeParser(findTodoForm.getStartDate()), parser.localDateTimeParser(findTodoForm.getFinishDate()))
+                            .and(qTodo.name.eq(findTodoForm.getName())).or(qTodo.date.between(parser.localDateTimeParser(findTodoForm.getStartDate()), parser.localDateTimeParser(findTodoForm.getFinishDate()))))));
         }
         return Lists.newArrayList(
-                todoRepo.findAll(qTodo.date.between(parser.localDateTimeParser(findTodoForm.getStartDate()), parser.localDateTimeParser(findTodoForm.getFinishDate()))
-                        .andAnyOf(qTodo.name.eq(findTodoForm.getName()), qTodo.status.eq(Status.valueOf(findTodoForm.getStatus())))));
+                todoRepo.findAll(qTodo.user.login.eq(principal.getName()).and(
+                        qTodo.date.between(parser.localDateTimeParser(findTodoForm.getStartDate()), parser.localDateTimeParser(findTodoForm.getFinishDate()))
+                        .andAnyOf(qTodo.name.eq(findTodoForm.getName()), qTodo.status.eq(Status.valueOf(findTodoForm.getStatus()))))));
     }
 
     public void editTodo(TodoForm todoForm, Long id)  throws IllegalArgumentException{
@@ -90,10 +88,6 @@ public class TodoService {
 
     public TodoDTO get(Long id) {
         return todoRepo.findById(id).map(TodoDTO::from).get();
-    }
-
-    public List<Todo> findTodo(FindTodoForm findTodoForm, Principal principal) {
-        return predicateService.filterTodo(principal, findTodoForm);
     }
 
     public void export(HttpServletResponse response, Principal principal, FindTodoForm form) throws IOException {
