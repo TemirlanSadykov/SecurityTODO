@@ -15,7 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.exceptions.TemplateInputException;
 
-import javax.persistence.EntityManager;
+import javax.mail.*;
+import javax.mail.Session;
+import javax.mail.internet.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -103,5 +105,49 @@ public class TodoService {
         List<Todo> todoList = findTodo(form, principal);
         TodoExcelExporterService excelExporter = new TodoExcelExporterService(todoList);
         excelExporter.export(response);
+    }
+    public static void sendMessage() throws MessagingException{
+        // Recipient's email ID needs to be mentioned.
+        String to = "temirlansadykov2004@gmail.com";
+
+        // Sender's email ID needs to be mentioned
+        final String from = "tester2004tester2004@gmail.com";
+
+        // Sender's password needs to be mentioned
+        final String password = "qwerty2004password";
+
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        properties.put("mail.smtp.starttls.enable", "true");
+
+
+        // Get the default Session object.
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication(){
+                return new PasswordAuthentication(from, password);
+            }
+        });
+
+            // Create a default MimeMessage object.
+            MimeMessage message = new MimeMessage(session);
+
+            // Set From: header field of the header.
+            message.setFrom(new InternetAddress(from));
+
+            // Set To: header field of the header.
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+
+            // Set Subject: header field
+            message.setSubject("Hi");
+
+            // Now set the actual message
+            message.setText("Privet");
+            // Send message
+            Transport.send(message);
+            System.out.println("Sent message successfully....");
+
     }
 }
