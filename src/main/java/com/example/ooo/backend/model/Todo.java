@@ -35,10 +35,14 @@ public class Todo extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column
     private LocalDateTime term;
+
+    @Column
+    private boolean already_sent;
 
 }

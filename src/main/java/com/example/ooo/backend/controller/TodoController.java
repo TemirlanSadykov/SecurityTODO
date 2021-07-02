@@ -60,7 +60,7 @@ public class TodoController {
         model.addAttribute("userName", principal.getName());
         model.addAttribute("link", userService.checkUserRole(principal));
 
-        var todos = todoService.getAll(pageable, principal.getName());
+        var todos = todoService.getAllByLogin(pageable, principal.getName());
         String uri = uriBuilder.getRequestURI();
         PropertiesService.constructPageable(todos, propertiesService.getDefaultPageSize(), model, uri);
 

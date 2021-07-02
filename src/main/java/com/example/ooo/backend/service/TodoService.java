@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.exceptions.TemplateInputException;
 
@@ -45,6 +46,7 @@ public class TodoService {
                 .status(Status.NEW)
                 .user(user)
                 .term(LocalDateTime.parse(todoForm.getTerm()))
+                .already_sent(false)
                 .build();
 
         todoRepo.save(todo);
@@ -75,7 +77,7 @@ public class TodoService {
         todoRepo.save(todo);
     }
 
-    public Page<TodoDTO> getAll(Pageable pageable, String login) {
+    public Page<TodoDTO> getAllByLogin(Pageable pageable, String login) {
         return todoRepo.findAllByUserLogin(pageable, login).map(TodoDTO::from);
     }
 
@@ -106,9 +108,11 @@ public class TodoService {
         TodoExcelExporterService excelExporter = new TodoExcelExporterService(todoList);
         excelExporter.export(response);
     }
-    public static void sendMessage() throws MessagingException{
+
+    public void sendMessage(Todo todo) throws MessagingException{
+
         // Recipient's email ID needs to be mentioned.
-        String to = "temirlansadykov2004@gmail.com";
+        String to = todo.getUser().getEmail();
 
         // Sender's email ID needs to be mentioned
         final String from = "tester2004tester2004@gmail.com";
@@ -141,13 +145,13 @@ public class TodoService {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 
             // Set Subject: header field
-            message.setSubject("Hi");
+            message.setSubject("TODO");
 
             // Now set the actual message
-            message.setText("Privet");
+            message.setText("Вы просрочили свое задание: " + todo.getName() + " - " + todo.getTerm());
             // Send message
             Transport.send(message);
-            System.out.println("Sent message successfully....");
-
+            todo.setAlready_sent(true);
+            todoRepo.save(todo);
     }
 }
