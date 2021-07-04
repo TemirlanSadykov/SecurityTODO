@@ -24,10 +24,9 @@ public class ScheduleService {
     public void schedule() throws MessagingException {
         List<Todo> todos = Lists.newArrayList(todoRepo.findAll(QTodo.todo.term.before(LocalDateTime.now())));
         for (int i = 0; i < todos.size(); i++){
-            if (!todos.get(i).isAlready_sent()){
+            if (!todos.get(i).isAlreadysent()){
                 todoService.sendMessage(todos.get(i));
             }
-            else break;
         }
     }
 }

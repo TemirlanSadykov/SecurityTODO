@@ -16,7 +16,7 @@ CREATE TABLE todos (
                        status VARCHAR(32),
                        user_id BIGINT NOT NULL,
                        term TIMESTAMP,
-                       already_sent BOOLEAN NOT NULL,
+                       alreadysent BOOLEAN NOT NULL,
                        PRIMARY KEY (id)
 );
 CREATE TABLE roles (

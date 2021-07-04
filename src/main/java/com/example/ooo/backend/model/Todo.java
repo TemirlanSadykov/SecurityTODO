@@ -43,6 +43,6 @@ public class Todo extends AbstractEntity {
     private LocalDateTime term;
 
     @Column
-    private boolean already_sent;
+    private boolean alreadysent;
 
 }

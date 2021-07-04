@@ -6,6 +6,7 @@ import com.example.ooo.backend.model.*;
 import com.example.ooo.backend.repository.TodoRepo;
 import com.example.ooo.backend.repository.UserRepo;
 import com.example.ooo.backend.forms.TodoForm;
+import com.example.ooo.backend.util.Constants;
 import com.google.common.collect.Lists;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.AllArgsConstructor;
@@ -46,7 +47,7 @@ public class TodoService {
                 .status(Status.NEW)
                 .user(user)
                 .term(LocalDateTime.parse(todoForm.getTerm()))
-                .already_sent(false)
+                .alreadysent(false)
                 .build();
 
         todoRepo.save(todo);
@@ -74,6 +75,7 @@ public class TodoService {
         todo.setDescription(todoForm.getDescription());
         todo.setStatus(Status.valueOf(todoForm.getStatus()));
         todo.setTerm(LocalDateTime.parse(todoForm.getTerm()));
+        todo.setAlreadysent(false);
         todoRepo.save(todo);
     }
 
@@ -114,12 +116,6 @@ public class TodoService {
         // Recipient's email ID needs to be mentioned.
         String to = todo.getUser().getEmail();
 
-        // Sender's email ID needs to be mentioned
-        final String from = "tester2004tester2004@gmail.com";
-
-        // Sender's password needs to be mentioned
-        final String password = "qwerty2004password";
-
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "587");
@@ -131,7 +127,7 @@ public class TodoService {
         // Get the default Session object.
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication(){
-                return new PasswordAuthentication(from, password);
+                return new PasswordAuthentication(Constants.SENDER, Constants.SENDER_PASSWORD);
             }
         });
 
@@ -139,7 +135,7 @@ public class TodoService {
             MimeMessage message = new MimeMessage(session);
 
             // Set From: header field of the header.
-            message.setFrom(new InternetAddress(from));
+            message.setFrom(new InternetAddress(Constants.SENDER));
 
             // Set To: header field of the header.
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
@@ -151,7 +147,7 @@ public class TodoService {
             message.setText("Вы просрочили свое задание: " + todo.getName() + " - " + todo.getTerm());
             // Send message
             Transport.send(message);
-            todo.setAlready_sent(true);
+            todo.setAlreadysent(true);
             todoRepo.save(todo);
     }
 }

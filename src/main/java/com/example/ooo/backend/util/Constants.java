@@ -5,6 +5,9 @@ import java.util.List;
 
 public final class Constants {
 
+    public static final String SENDER = "tester2004tester2004@gmail.com";
+    public static final String SENDER_PASSWORD = "qwerty2004password";
+
     public static final String ADMIN = "ADMIN";
     public static final String USER = "USER";
 

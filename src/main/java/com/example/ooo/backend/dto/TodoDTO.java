@@ -20,7 +20,7 @@ public class TodoDTO {
     private Status status;
     private UserDTO userDTO;
     private LocalDateTime term;
-    private boolean already_sent;
+    private boolean alreadysent;
 
     public static TodoDTO from(Todo todo) {
         return builder()
@@ -30,7 +30,7 @@ public class TodoDTO {
                 .description(todo.getDescription())
                 .status(todo.getStatus())
                 .term(todo.getTerm())
-                .already_sent(todo.isAlready_sent())
+                .alreadysent(todo.isAlreadysent())
                 .userDTO(UserDTO.from(todo.getUser()))
                 .build();
     }
