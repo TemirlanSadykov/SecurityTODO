@@ -8,6 +8,17 @@ public final class Constants {
     public static final String SENDER = "tester2004tester2004@gmail.com";
     public static final String SENDER_PASSWORD = "qwerty2004password";
 
+    public static final String HOST = "mail.smtp.host";
+    public static final String HOST_VALUE = "smtp.gmail.com";
+    public static final String PORT = "mail.smtp.port";
+    public static final String PORT_VALUE = "587";
+    public static final String AUTH = "mail.smtp.auth";
+    public static final String AUTH_VALUE = "true";
+    public static final String SSL = "mail.smtp.ssl.trust";
+    public static final String SSL_VALUE = "smtp.gmail.com";
+    public static final String STARTTLS = "mail.smtp.starttls.enable";
+    public static final String STARTTLS_VALUE = "true";
+
     public static final String ADMIN = "ADMIN";
     public static final String USER = "USER";
 

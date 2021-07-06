@@ -27,6 +27,7 @@ import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -117,11 +118,11 @@ public class TodoService {
         String to = todo.getUser().getEmail();
 
         Properties properties = new Properties();
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.port", "587");
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put(Constants.HOST, Constants.HOST_VALUE);
+        properties.put(Constants.PORT, Constants.PORT_VALUE);
+        properties.put(Constants.AUTH, Constants.AUTH_VALUE);
+        properties.put(Constants.SSL, Constants.SSL_VALUE);
+        properties.put(Constants.STARTTLS, Constants.STARTTLS_VALUE);
 
 
         // Get the default Session object.
@@ -144,7 +145,7 @@ public class TodoService {
             message.setSubject("TODO");
 
             // Now set the actual message
-            message.setText("Вы просрочили свое задание: " + todo.getName() + " - " + todo.getTerm());
+            message.setText("Вы просрочили свое задание: " + todo.getName() + " - " + todo.getTerm().format(DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm")));
             // Send message
             Transport.send(message);
             todo.setAlreadysent(true);
